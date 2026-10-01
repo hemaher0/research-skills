@@ -81,64 +81,70 @@ See the [official repository marketplace and project configuration guide](https:
 
 ## Project configuration
 
-1. Projects that use work records choose one canonical work-item repository
-   and record format. Without a document router, continue using project
-   instructions, the local `.docs-schema` when present, and ordinary file tools.
-2. Create or update root `AGENTS.local.md` during every installation, even
-   without a separate request for the file. Read existing project instructions
-   and the [project template](plugins/research-skills/templates/AGENTS.md).
-   Keep shared experiment/artifact conventions in project instructions or their
-   existing source. Native manifests, setup guides and scheduler configuration
-   own reproducible environments; Git/runtime inspection supplies actual paths,
-   wrapper and allocation facts. Run-specific state belongs to its record.
-   Keep mirror destinations and declared property mappings in the project's
-   selected integration configuration, using a private source where required.
-   Read the [local configuration template](plugins/research-skills/templates/AGENTS.local.md)
-   and merge its research section into `AGENTS.local.md`. Fill only selected
-   local paths, host constraints or a private configuration pointer. If no
-   local overrides are needed, write `Local overrides: None. Use effective project settings and skill defaults.`
-   in that section. Remove unused template fields and avoid duplicating settings
-   already resolved elsewhere. Preserve existing choices and other packages'
-   sections. The templates are
-   available in `.agents/vendor/research-skills/plugins/research-skills/templates/`.
-   Inspect repository/environment facts and reuse established choices. Confirm
-   consequential unknowns such as storage boundaries, required execution
-   profiles, resource allocations, or a requested mirror destination with the project owner before
-   dependent setup. A plugin installation does not authorize a run, create a
-   research record, or initialize work history.
-   An unresolved choice is pending, not evidence that a setting is unnecessary.
-   Connect the local file to root instructions. If `AGENTS.md` exists, preserve
-   it and add the following instruction unless it already reads or resolves to
-   the local file:
+Writing root `AGENTS.local.md` is a required installation step.
 
-   ```markdown
-   Read and follow root AGENTS.local.md when it exists.
-   ```
+1. Read existing project instructions, the
+   [project template](plugins/research-skills/templates/AGENTS.md) and the
+   [local configuration template](plugins/research-skills/templates/AGENTS.local.md).
+   Create the local file from the template, or merge its research section into
+   the existing file. Preserve established settings and other packages' sections.
+2. Replace applicable placeholders with actual document/artifact paths, host
+   settings and integration configuration. Use established paths or the
+   documented record defaults in [experiments](plugins/research-skills/skills/experiments/SKILL.md).
+   Resolve relative experiment-document paths from the main checkout.
+3. Keep shared research choices in their project configuration and reproducible
+   environments in native manifests/setup configuration. Follow
+   [run-gpu](plugins/research-skills/skills/run-gpu/SKILL.md) for the shared uv or
+   Conda environment and stable wrapper. Where settings already exist,
+   reference their actual source and verify its contents. Credentials remain
+   with their existing credential store or connector.
+4. For Notion mirroring, fill the destination configuration as described below.
+   Remove fields for features the project does not use. `Disabled`/`Not Configured`
+   denotes an unused integration, not an unknown destination. Required unset
+   values keep configuration incomplete.
+5. Connect the local file to root instructions using the procedure below.
 
-   If `AGENTS.md` is absent, the recommended connection is a relative symbolic
-   link created from the project root, after writing `AGENTS.local.md`:
+If root `AGENTS.md` exists, preserve it and add this instruction unless it
+already reads or resolves to the local file:
 
-   ```bash
-   ln -s AGENTS.local.md AGENTS.md
-   ```
+```markdown
+Read and follow root AGENTS.local.md when it exists.
+```
 
-   Preserve existing files and links; do not replace them or add a self-reference
-   to a linked local file. If `AGENTS.override.md` takes precedence, ensure it
-   also reads the local file. Verify the effective connection and link targets.
+If `AGENTS.md` is absent, the recommended connection is a relative symbolic
+link from the project root, after writing `AGENTS.local.md`:
 
-3. The work-item repository and experiment document root may differ. Resolve
-   relative experiment document paths from the main checkout. If experiment
-   code needs a branch or worktree, keep document records in their configured
-   location under the project's Git policy and connect the records with links.
-4. Before declaring installation complete, verify that `AGENTS.local.md`
-   contains the resolved research settings or the explicit no-override
-   declaration, has no unused placeholders, and is read through effective root
-   instructions. Verify marketplace paths/name, configuration sources, and
-   applicable configured paths in a new session. Report skill availability, authored
-   settings, intentionally disabled features, and decisions still needed for
-   dependent work. Required unresolved choices remain pending; plugin availability
-   alone does not complete configuration. Verify a GPU wrapper only when its setup was selected;
-   installation alone does not run a GPU workload or publish a Notion page.
+```bash
+ln -s AGENTS.local.md AGENTS.md
+```
+
+Preserve existing files and links and avoid self-references. If
+`AGENTS.override.md` takes precedence, ensure it reads the local file.
+
+### Notion destination settings
+
+Fill these actual values when Notion mirroring is used:
+
+- Destination URL and destination type: parent page or data source.
+- For a parent page: the child-title pattern containing the exact Experiment ID.
+- For a data source: its identifier, title and Experiment ID property mappings,
+  and the status property and value corresponding to Completed.
+
+Use the existing selected integration configuration when present. Otherwise,
+write these destination fields directly in root `AGENTS.local.md`. If stored
+elsewhere, fill the configuration-source field with that actual file's path
+and verify that its required destination fields are filled. A pointer to a
+nonexistent file, a placeholder URL or "use defaults" does not configure
+Notion. The destination contract is in
+[notion-mirror](plugins/research-skills/skills/notion-mirror/SKILL.md).
+
+Before completing installation, read the completed local file and referenced
+configuration. Verify that applicable values are filled, no placeholders
+remain, configured paths resolve, and effective instructions read the local
+file. Check actual marketplace paths/name and skill availability in a new
+session. Verify the GPU wrapper when GPU setup is used, and report any
+unverified Notion access. Installation does not run a research workload or
+create a Notion page.
 
 Reasoning skills supply scientific judgment; `experiments` supplies record
 identity, provenance, lineage, format, and lifecycle. Forward document discovery,
