@@ -1,0 +1,4 @@
+interface:
+  display_name: "Probing"
+  short_description: "Develop provisional hypotheses from research cues"
+  default_prompt: "Use $probing to develop an evidence-grounded hypothesis, expose its assumptions, and identify the observations that could clarify it."

@@ -5,14 +5,18 @@ description: Use when planning or running a bounded AI/ML research pilot to obta
 
 # Pilot
 
-A pilot is a small scientific decision, not a prerequisite for answering a
-question or changing code. It can stand alone or belong to an existing managed
-experiment. Planning a pilot does not authorize execution; run only when the
-user's request includes execution. Use the project's existing execution policy
-and entrypoints.
+A pilot obtains new evidence for a bounded research question under the
+representative conditions that question requires. Its scope can be narrow while
+its model, data, scale, and execution duration remain substantial. It can stand
+alone or belong to an existing managed experiment. Planning does not authorize
+execution; run when the user's request includes it, using the project's
+execution policy and entrypoints.
 
-When project instructions configure work items, preserve every request and
-discussion, protocol, run evidence, classification, and next action there.
+Follow the project's work-history capture policy. When it calls for a work-item
+update, preserve the covered requests and discussions, protocol, run evidence,
+classification, and next action there. A configured storage location does not
+enable capture; selective or disabled capture does not prevent authorized
+pilot work or its required evidence.
 Use an available document router for the update; if none is available, use
 project instructions, the local `.docs-schema` when present, and ordinary file
 tools. This work-item trace is separate from an optional managed experiment
@@ -20,19 +24,23 @@ record.
 
 ## Scope before execution
 
-- State the question, representative condition, falsifiable hypothesis, and
-  observation that would support, reject, or leave it unresolved.
-- Select only the essential comparisons and measurements. The initial packet
-  contains at most four training or evaluation runs in total, including failed
-  or invalid launches. Do not expand it into a sweep, ablation suite, or broad
-  benchmark.
-- Estimate run count, wall time, and compute cost before launching. Stop when
-  the decision gate is met or the budget is exhausted.
+- State the question, the reason for this attempt, representative conditions,
+  and what will be observed. Include the working hypothesis and an expectation
+  when justified; exploratory observations can precede a clear hypothesis.
+- Select essential comparisons and measurements. Establish the run count or
+  adaptive execution boundary, wall time, and compute budget from project
+  policy and the user's authorized scope.
+  Include failed and invalid attempts in actual resource accounting.
+- Decide what would make further execution useful, unnecessary, or out of scope.
+  Keep any predeclared decision criterion unchanged for the runs it governs;
+  record a revised criterion as a new, dated comparison. Stop at the authorized
+  boundary or when further attempts would not inform the selected question.
 - Use the real model, checkpoint, data, planned evaluation quantity, procedure,
   precision, hardware, and distributed topology for the selected condition.
-  Reduce the number of conditions, seeds, and diagnostics rather than the
-  scientific scale. Toy data or a shortened run is a software check, not pilot
-  evidence.
+  Narrow comparisons before changing the scale needed for the phenomenon.
+  Preserve required replications and measurements as well. Toy data or an
+  arbitrarily shortened run is a software check, not representative pilot
+  evidence. A naturally short process is valid when it covers the phenomenon.
 
 ## Keep actions separate
 
@@ -60,8 +68,12 @@ ordinary file tools.
 ## Review the evidence
 
 Check the protocol, existing implementation, environment, inputs, controls, and
-measurements before treating a raw failure as scientific rejection. Classify the
-pilot once:
+measurements before treating a raw failure as scientific rejection. Record run
+validity separately from the scientific interpretation. Use
+[interpretation](../interpretation/SKILL.md) to analyze valid observations.
+
+When a pilot has a predeclared decision gate, record its outcome under the
+selected conditions using the project's classification or these labels:
 
 | Classification | Meaning |
 | --- | --- |
@@ -70,16 +82,20 @@ pilot once:
 | `INVALID` | Run, input, environment, or measurement is defective. |
 | `INCONCLUSIVE` | Valid evidence cannot decide the gate. |
 
-Preserve the original hypothesis and gate after observing results. Do not tune a
-failed candidate or try nearby conditions automatically. For additional runs,
-present the proposed conditions, run count, wall time, compute cost, and stop
-gate; start only when that expansion is authorized. Report failed, skipped, and
-unmeasured items accurately.
+For an exploratory pilot without such a gate, report the observed pattern,
+uncertainty, and what it makes worth examining next; do not manufacture a binary
+verdict. Preserve prior expectations and protocol versions. Report failed,
+skipped, and unmeasured items accurately.
 
-The classification records a pilot-gate decision, not a general verdict on the
-hypothesis. Report the conditions tested and any important untested conditions
-or alternative explanations before recommending expansion or stopping.
+Any classification records a pilot-gate decision, not a general verdict on the
+hypothesis. Report the conditions tested, unexpected reactions, important
+untested conditions, and alternative explanations.
 
-If a run is `INVALID`, repair only the demonstrated defect and rerun within the
-remaining four-run budget when that repair is in scope; otherwise report the
-needed decision. A supported gate can conclude at pilot scope without expansion.
+For an invalid run, repair a demonstrated defect and rerun only when both are
+within the existing implementation and execution scope. Further informative
+attempts within the agreed conditions and budget can continue without repeated
+approval. Use [evidence-based-research](../evidence-based-research/SKILL.md) to choose the next inquiry and
+[probing](../probing/SKILL.md) to revise a hypothesis. For expansion beyond the
+authorized boundary, present the changed conditions, runs, time, and compute
+before obtaining the required scope decision. A pilot can end with unresolved
+questions and does not require a larger study.

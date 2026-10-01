@@ -5,17 +5,32 @@ updated, and removed together as one `research-skills` plugin.**
 
 ## Included skills
 
+Research can start from a precedent, an unexplained result, a partial hypothesis,
+or a user-provided cue. Select the skill that addresses the current uncertainty;
+the list below is not a mandatory sequence. Questions and explanations can
+change, and useful findings can remain incomplete.
+
 | Skill | Purpose |
 | --- | --- |
+| [exploration](plugins/research-skills/skills/exploration/SKILL.md) | Investigate precedents, their evidence, conditions, and conflicts. |
+| [digging](plugins/research-skills/skills/digging/SKILL.md) | Decompose a specific problem and inspect its uncertain connections, using targeted reproduction when useful. |
+| [interpretation](plugins/research-skills/skills/interpretation/SKILL.md) | Analyze existing results and judge what they support or leave unresolved. |
+| [reinterpretation](plugins/research-skills/skills/reinterpretation/SKILL.md) | Recombine research cues into another connection, concept, or question. |
+| [probing](plugins/research-skills/skills/probing/SKILL.md) | Develop provisional hypotheses, expose assumptions, and identify informative observations. |
+| [evidence-based-research](plugins/research-skills/skills/evidence-based-research/SKILL.md) | Advance an inquiry through purposeful attempts, evidence, and revised judgment. |
 | [experiments](plugins/research-skills/skills/experiments/SKILL.md) | Manage the protocol, lineage, execution state, and evidence of a requested persistent experiment record. |
-| [pilot](plugins/research-skills/skills/pilot/SKILL.md) | Plan or run a bounded pilot under representative real conditions, with or without an experiment record. |
-| [report](plugins/research-skills/skills/report/SKILL.md) | Interpret existing research evidence and report it in the requested format. |
+| [pilot](plugins/research-skills/skills/pilot/SKILL.md) | Obtain new evidence under representative conditions within an authorized execution scope. |
+| [report](plugins/research-skills/skills/report/SKILL.md) | Present current findings and open questions faithfully in the requested format. |
 | [notion-mirror](plugins/research-skills/skills/notion-mirror/SKILL.md) | Mirror a completed local experiment document to its configured Notion destination when requested. |
 | [run-gpu](plugins/research-skills/skills/run-gpu/SKILL.md) | Run CUDA work through a stable repository approval prefix and the main checkout's shared uv environment. |
 
 ## Install for a project
 
-Use a repository marketplace and project configuration. Run these commands from
+Install the plugin and complete applicable project settings using the steps
+below. Preserve existing instructions and established choices.
+
+Use a repository marketplace and project configuration. Reuse a suitable source
+checkout when present. For a first setup, run these commands from
 the **target project's root**, with Git access to this repository:
 
 ```bash
@@ -69,59 +84,117 @@ See the [official repository marketplace and project configuration guide](https:
 1. Projects that use work records choose one canonical work-item repository
    and record format. Without a document router, continue using project
    instructions, the local `.docs-schema` when present, and ordinary file tools.
-2. Merge the relevant sections of the [research AGENTS.md template](plugins/research-skills/templates/AGENTS.md)
-   and [AGENTS.local.md template](plugins/research-skills/templates/AGENTS.local.md)
-   into the project's files. Fill in actual experiment document and artifact
-   paths, execution environments, GPU allocations, and Notion destinations.
-   Installation does not create these files automatically. The templates are
+2. Read existing project instructions and the [project template](plugins/research-skills/templates/AGENTS.md).
+   Keep shared experiment/artifact conventions in project instructions or their
+   existing source. Native manifests, setup guides and scheduler configuration
+   own reproducible environments; Git/runtime inspection supplies actual paths,
+   wrapper and allocation facts. Run-specific state belongs to its record.
+   Keep mirror destinations and declared property mappings in the project's
+   selected integration configuration, using a private source where required.
+   The [local template](plugins/research-skills/templates/AGENTS.local.md) is only
+   for selected local paths, host constraints or a private configuration pointer.
+   Omit fields already resolved elsewhere and unused/default settings; no local
+   file is required when project/native settings suffice. Preserve existing
+   choices and other packages' sections. The templates are
    available in `.agents/vendor/research-skills/plugins/research-skills/templates/`.
+   Inspect repository/environment facts and reuse established choices. Confirm
+   consequential unknowns such as storage boundaries, required execution
+   profiles, resource allocations, or a requested mirror destination with the project owner before
+   dependent setup. A plugin installation does not authorize a run, create a
+   research record, or initialize work history.
+   When a local file is used, ensure effective root instructions (`AGENTS.md`, or `AGENTS.override.md`
+   when it takes precedence) include an equivalent of:
+
+   ```markdown
+   Read and follow root AGENTS.local.md when it exists.
+   ```
 3. The work-item repository and experiment document root may differ. Resolve
    relative experiment document paths from the main checkout. If experiment
-   code needs a branch or worktree, keep document records on their configured
-   primary branch and connect the two records with links.
+   code needs a branch or worktree, keep document records in their configured
+   location under the project's Git policy and connect the records with links.
+4. Verify marketplace paths/name, effective configuration sources, and applicable
+   configured paths in a new session. Report skill availability, authored
+   settings, intentionally disabled features, and decisions still needed for
+   dependent work. Verify a GPU wrapper only when its setup was selected;
+   installation alone does not run a GPU workload or publish a Notion page.
 
-Research skills supply scientific judgment and the format, lifecycle, and
-evidence standards for experiment records. Forward document discovery,
+Reasoning skills supply scientific judgment; `experiments` supplies record
+identity, provenance, lineage, format, and lifecycle. Forward document discovery,
 placement, writing, editing, and review to an available document router;
 otherwise use project conventions and ordinary file tools. Experiment records
 and work records do not replace each other.
+
+Unless project configuration selects another location, new experiment records
+use this path relative to the main checkout:
+
+```text
+references/experiments/YYYY-MM-DD-<topic>/YYYY-MM-DD-<topic>-experiment.md
+```
+
+Configured roots and filename conventions take precedence. Keep existing
+record paths when continuing an experiment.
 
 ## Usage
 
 Skills may be selected automatically for relevant requests or invoked explicitly:
 
 ```text
+Use $exploration to investigate the closest precedents and the conditions under which their conclusions hold.
+Use $digging to trace the assumptions and implementation behind this unexplained behavior.
+Use $interpretation to analyze these results, including variation, exceptions, and the evidence limits.
+Use $reinterpretation to examine whether these research cues suggest a different connection or question.
+Use $probing to develop a provisional explanation and identify an observation that would clarify it.
+Use $evidence-based-research to investigate this question iteratively and revise the next attempt based on what is learned.
 Use $experiments to create a local record and manage this research's plan and results over time.
-Use $pilot to plan the smallest representative run that can assess this hypothesis through an existing entrypoint.
+Use $pilot to plan the essential comparisons and representative execution needed to investigate this question.
 Use $pilot to execute the agreed pilot and report its results in this conversation.
-Use $report to interpret the evidence already available and explain it in this conversation.
-Use $report to complete the analysis in the existing experiment record.
+Use $report to present the current findings and open questions in this conversation.
+Use $report to present the reviewed analysis in the existing experiment record.
 Use $notion-mirror to mirror the completed local experiment document to its configured Notion destination.
 Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this repository's shared uv environment.
 ```
 
 ### Environment and workflow requirements
 
+- **Reasoning skills:** Work in the conversation or existing project records
+  unless a durable deliverable is requested or required. Investigation does not
+  require a persistent experiment, a settled hypothesis, numerical predictions,
+  a new run, or a complete paper. Preserve user contributions, negative and
+  unexpected findings, and the evidence behind changed or unchanged judgments.
+- **evidence-based-research and probing:** `probing` develops the hypothesis and
+  its assumptions; `evidence-based-research` chooses and revisits attempts.
+  Continue iterations within the authorized inquiry and execution budget, with
+  a new scope decision only when
+  that boundary needs to change. Code implementation uses the available
+  development workflow; research does not require an artificial failing test.
 - **experiments:** Update the same Markdown record from planning through final
   analysis only when persistent record management is requested. Create branches
   or worktrees only for a concrete isolation need. Do not change source, tests,
   notebooks, experiment scripts, or dependencies as a side effect of record management.
+  Preserve dated question/protocol changes and earlier expectations. `Completed`
+  closes the record's declared work, while scientific questions may remain open.
 - **pilot:** Works without an `experiments` record. Use existing entrypoints and
-  preserve the model, data, evaluation quantity, and execution environment.
-  Run no more than four training or evaluation runs in total. Before expanded
-  execution, specify the additional runs, time, and compute and obtain a
-  separate scope decision.
-- **report:** Interpret existing evidence. Handle investigation and answer
-  requests in the conversation; create local files only when a document
-  deliverable is requested. A new pilot or experiment record is not a prerequisite.
+  preserve the model, data, evaluation quantity, scale, duration, and environment
+  needed for the question. Narrow comparisons while retaining required
+  replications. Toy data and arbitrarily shortened runs are software checks.
+  Use project policy and the authorized run count or adaptive resource boundary.
+  Specify added conditions, runs, time, and compute before expansion beyond that
+  boundary.
+- **interpretation and report:** `interpretation` analyzes evidence; `report`
+  communicates it in the requested format and checks fidelity to the sources.
+  Both can return a conversational answer with unresolved questions. Create
+  files only for a requested or project-required deliverable; new runs and
+  experiment records are not prerequisites.
 - **notion-mirror:** Use only when mirroring a completed local experiment
   document is requested. It is not a prerequisite for other research skills.
-  Notion access and destination-specific settings in the repository's
-  `AGENTS.local.md` are required. Missing settings or access do not change the
+  Notion access and a selected destination configuration are required;
+  `AGENTS.local.md` is only an optional private/host override. Missing settings or access do not change the
   local experiment's completed status.
-- **run-gpu:** Uses Bash, Git, `uv`, and the main checkout's `pyproject.toml`,
-  `uv.lock`, and `.venv`. CUDA execution requires an NVIDIA GPU, a driver, and
-  CUDA-enabled PyTorch in the shared environment. Conda environments are not used.
+- **run-gpu:** Requires Bash and Git. Inventory uses `nvidia-smi` without `uv`
+  or a Python environment. Python execution uses `uv` and the main checkout's
+  `pyproject.toml`, `uv.lock`, and `.venv`. CUDA execution requires an NVIDIA GPU,
+  a driver, and CUDA-enabled PyTorch in the shared environment. Conda environments
+  are not used.
 - Run the installed skill's `install-gpu-exec` once to deploy the stable
   entrypoint at the target repository's `.agents/bin/gpu-exec`. Reinstalling
   after a plugin update preserves this path so every GPU command begins with
@@ -136,20 +209,22 @@ Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this re
   server. Follow existing SSH and scheduler procedures. Plugin installation
   does not grant GPU access.
 
-`run-gpu` reads local settings to identify the current host's repository paths,
-shared uv environment, and GPU allocation; it does not run other Python
-environment types. Verify dynamically allocated devices at execution time.
+`run-gpu` resolves checkout and wrapper paths from Git, verifies the shared uv
+environment for Python execution, and checks the current allocation. A local host profile supplies
+only necessary constraints or connection context. It does not support other
+Python environment types. Verify allocated devices at execution time.
 Notion mirroring requires a destination URL and the identifiers and properties
 appropriate for that destination type.
 
-Pilot execution, interpretation of existing results, and persistent record
-management are independent requests. Skill selection alone does not create
+Reasoning, pilot execution, reporting, and persistent record management are
+independent capabilities. Skill selection alone does not create
 runs, code changes, local documents, worktrees, or Notion pages.
 
-If a work-item repository is configured, preserve every request and discussion
-in its owning topic record, including GPU work and Notion mirroring. Update
-reader-facing documentation only when requested. New experiment records default
-to `YYYY-MM-DD-<topic>-experiment.md`; do not rename existing `experiment.md` files automatically.
+Work-item updates follow the project's history capture policy, including GPU
+work and Notion mirroring. A configured repository alone does not enable
+all-turn capture. Selective or disabled capture does not prevent requested
+research records, reports, execution, or mirrors and their required evidence.
+Update reader-facing documentation only when requested.
 
 ### Install the GPU entrypoint
 
@@ -164,7 +239,7 @@ single reusable approval prefix for GPU execution. Put `--workdir`, `--devices`,
 the execution mode, and its arguments after this fixed path. Do not execute GPU
 commands directly through a wrapper in the plugin cache.
 
-## Update for a project
+## Update or remove from a project
 
 From the target project's root, update its source checkout:
 
@@ -175,6 +250,16 @@ git -C .agents/vendor/research-skills pull --ff-only
 Restart the app if using the desktop client and start a new Codex session so
 the local plugin is refreshed. Run `install-gpu-exec` again if its bundled
 launcher changed.
+
+To disable it for this project, set
+`plugins."research-skills@project-skills".enabled = false` in
+`.codex/config.toml`, using the project's actual marketplace name. To remove
+the project setup, remove that configuration entry and only the `research-skills`
+entry from `.agents/plugins/marketplace.json`. Keep other plugins' entries.
+The source checkout can be removed separately once it is no longer needed.
+If the GPU entrypoint was installed and is no longer used, also remove its
+deployed `.agents/bin/gpu-exec` and `.agents/bin/gpu_probe.py` files. Plugin removal
+does not remove those repository-local copies.
 
 ## Repository layout
 
@@ -187,6 +272,12 @@ plugins/research-skills/
 │   ├── AGENTS.local.md
 │   └── experiment.md
 └── skills/
+    ├── exploration/
+    ├── digging/
+    ├── interpretation/
+    ├── reinterpretation/
+    ├── probing/
+    ├── evidence-based-research/
     ├── experiments/
     │   ├── SKILL.md
     │   └── agents/openai.yaml
@@ -209,12 +300,16 @@ plugins/research-skills/
 ```
 
 Add new skills at `plugins/research-skills/skills/<skill-name>/SKILL.md`.
+Every included skill has an `agents/openai.yaml` for its name, selection
+description, and example prompt. The reasoning skills include their research
+basis and evidence limits in `SKILL.md`; no separate workflow document is required.
 Place optional `agents/` or `scripts/` alongside them and reusable templates
 in `plugins/research-skills/templates/`. Keep **one plugin** in the marketplace.
 
-For a release that updates installed copies, manage `version` in
-`.codex-plugin/plugin.json` so the cache can distinguish the new content.
-An edit or push alone does not require a new release.
+Manage `version` in `.codex-plugin/plugin.json` when preparing a release.
+Local plugin refresh follows the source-update and restart steps above; a
+manifest version change is not required for that refresh. An edit or push alone
+does not require a new release.
 
 ## Development checks
 

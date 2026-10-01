@@ -1,25 +1,26 @@
 {
   "name": "research-skills",
   "version": "0.3.0",
-  "description": "Independent AI/ML experiment records, pilots, reports, requested Notion mirrors, and repository-scoped GPU execution with a shared uv environment.",
+  "description": "AI/ML precedent investigation, problem decomposition, result interpretation, cue recombination, hypothesis development, and iterative research, with independent records, pilots, reports, mirrors, and GPU execution.",
   "author": {
     "name": "hemaher0",
     "url": "https://github.com/hemaher0"
   },
   "repository": "https://github.com/hemaher0/research-skills",
-  "keywords": ["research", "experiments", "pilot", "report", "notion", "machine-learning", "gpu"],
+  "keywords": ["research", "exploration", "hypotheses", "interpretation", "experiments", "pilot", "report", "notion", "machine-learning", "gpu"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Research Skills",
-    "shortDescription": "AI/ML experiments and shared-uv GPU workflows",
-    "longDescription": "A single collection for persistent AI/ML experiment records, standalone bounded pilots, evidence-based reports, requested Notion mirrors, and repository-scoped CUDA execution through one stable approval prefix and shared uv environment.",
+    "shortDescription": "Evidence-led AI/ML inquiry and research operations",
+    "longDescription": "Six reasoning skills for investigating precedents, decomposing problems, interpreting results, recombining research cues, developing provisional hypotheses, and advancing an inquiry through evidence-led iterations. Independent skills manage persistent experiment records, representative pilots, research reports, requested Notion mirrors, and repository-scoped shared-uv GPU execution.",
     "developerName": "hemaher0",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
     "defaultPrompt": [
-      "Manage persistent AI/ML experiment records, hypotheses, and execution evidence.",
-      "Plan a bounded pilot under representative real conditions using an existing entrypoint.",
-      "Interpret existing experiment results within the available evidence.",
+      "Investigate research cues and choose an informative next attempt within this inquiry's scope.",
+      "Develop a provisional hypothesis from the available evidence and expose its assumptions.",
+      "Analyze existing research results and state what remains unexplained.",
+      "Manage a requested persistent experiment record or plan representative new-evidence execution.",
       "Inspect this repository's shared uv environment and the GPUs allocated on this server."
     ]
   }

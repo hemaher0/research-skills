@@ -1,55 +1,44 @@
-# Repository guidance
+# Project Research Configuration
 
-<!--
-Copy the relevant sections into a repository's tracked AGENTS.md and replace every
-angle-bracketed value. Keep portable repository policy here; put checkout paths,
-environment details, GPU allocations, and Notion destinations in AGENTS.local.md.
-Do not put credentials or tokens in either file.
--->
+<!-- Merge only project choices into effective instructions or reference an
+existing project configuration. Omit settings using domain defaults and
+preserve existing rules. Host/private path overrides belong in AGENTS.local.md
+when necessary; credentials remain in their existing credential store. -->
 
-## Experiment records
+## Research Records
 
-- Base branch for new root experiments: `<base branch, for example main>`
-- Default experiment document root: `<path relative to the main checkout, for example references/experiments>`
-- New default record filename: `YYYY-MM-DD-<topic>-experiment.md` inside its dated directory; keep existing `experiment.md` paths.
-- Default experiment artifact root: `<repository-relative path or external-output convention>`
-- Default worktree root, when isolation is needed: `<repository-relative path or None>`
-- Governing terminology or notation sources: `<repository-relative links or None>`
-- Optional spec/change system: `<commands and ID mapping, or None>`
-- Create a branch or worktree only for a concrete isolation need or a repository
-  requirement. When one is created, name it with the Experiment ID and keep its
-  root ignored locally.
-- The `$experiments` skill owns a Markdown record only when persistent experiment
-  management is requested. A standalone `$pilot` or `$report` needs no record.
-  A completed record remains its local source of truth.
-- A configured canonical work item captures every request and discussion and
-  links the experiment. It does not change this scientific record's schema or
-  require a document-routing plugin; use the local `.docs-schema` when present
-  and ordinary file tools as fallback. The work-item repository and
-  experiment-document root may be different. Keep each in its configured
-  location; resolve relative experiment-document paths from the main checkout,
-  not a code worktree. Do not create a document branch when a code experiment
-  needs its own branch or worktree.
-- When agents work in parallel, assign each independent task a distinct child
-  work item if the local schema supports parent links. Each agent updates only
-  its child; the coordinator owns the root and shared Git integration. Give a
-  shared experiment or report one writer. Under an older schema, use one record
-  writer and timestamped agent handoffs until migration.
+- Default experiment document root, if overriding the skill default: `<project-relative location>`
+- Default experiment artifact root, if designated: `<project location or existing artifact configuration>`
+- Governing terminology or notation sources, if required: `<existing project sources>`
 
-## Experiment execution boundary
+Scientific reasoning, record ownership, execution boundaries, and default
+filenames remain in the responsible research skills. Research questions may
+evolve and remain unresolved; a persistent record and a finished report are
+separate requested deliverables. Execution budgets follow project policy and
+the scope authorized for the inquiry. Registered
+work history follows the project's document policy and existing local schema.
+Branch/worktree policy belongs to the project's Git procedure. Reuse existing
+records and selected roots.
 
-- `$experiments` supplies the scientific content, template, lifecycle, and
-  evidence for requested experiment records; use an available document router
-  for placement, writing, and review. If none is available, use the configured
-  location, template, and ordinary file tools. Result tables, figures, and
-  artifacts stay in their configured experiment locations.
-- It must not create, modify, or delete source code, tests, notebooks, experiment
-  scripts, dependency declarations, or runtime configuration.
-- Use existing repository entrypoints for training, evaluation, and analysis. If
-  the frozen protocol requires missing code, record the prerequisite and stop.
-- Design discussion alone does not create an experiment document, branch,
-  worktree, or run; it still updates a configured topic work item.
-  Training and evaluation require a request that includes execution.
-- A requested research pilot uses representative real conditions and no more than
-  four total training or evaluation runs. Expanded execution requires a
-  separately authorized run, time, and compute budget.
+## Execution Configuration
+
+Use the repository's native dependency/environment declarations, setup guide,
+and scheduler/container configuration. Inspect the actual main checkout,
+environment and available allocation when needed; record run-specific revision,
+job/device allocation, and evidence in the experiment or work record. The GPU
+skill and wrapper own their stable entrypoint and shared uv environment contract.
+
+## Notion Mirror Configuration (when selected)
+
+- Notion mirror configuration source: `<existing project/private integration configuration, or Not Configured>`
+
+The selected configuration declares the exact destination URL/type and either
+the parent-page title pattern or required data-source property mappings.
+Keep private destinations in an existing private configuration source. The
+mirror skill specifies the required fields, verifies the actual destination,
+and owns the requested write; credentials stay with the connector. An individual
+experiment's mirror URL and result stay in that experiment record.
+
+Read root `AGENTS.local.md` when selected host/path or private configuration
+overrides are present. Overrides must remain within project policy and actual
+permissions; they do not authorize execution or external publication.

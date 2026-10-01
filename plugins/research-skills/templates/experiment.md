@@ -10,30 +10,32 @@ updated_at: "<ISO 8601 timestamp with UTC offset>"
 
 ---
 
-**Key point:** <the scientific problem to resolve and why this experiment is needed>
+**Key point:** <the current scientific question and why this inquiry is worth pursuing>
 
-- Observations that motivated the experiment and what remains unexplained:
+- Observations or user-provided cues that motivated the inquiry and what remains unexplained:
 - Direct prior research or official sources and how this experiment differs:
 
 # Hypothesis
 
 ---
 
-**Key point:** <one falsifiable hypothesis with the subject, comparison conditions, and expected direction>
+**Key point:** <the provisional hypothesis or exploratory question; state what is still undefined>
 
-- Possible mechanism:
-- Observations that would refute the hypothesis:
-- Decisive gate frozen before inspecting results:
+- Linked cues and their conditions:
+- Proposed relationship or mechanism, when there is one:
+- Added assumptions, competing explanations, and unexplained cases:
+- Observations that could develop or distinguish the explanation:
+- Predeclared decision criterion, if justified:
 
 # Expected Result
 
 ---
 
-**Key point:** <which observations would support, refute, or leave the hypothesis unresolved>
+**Key point:** <what this attempt is intended to reveal, with expectations only where justified>
 
-- Minimum primary metrics and comparison criteria:
-- Supporting diagnostics and the alternative explanation each would rule out:
-- Expected patterns and uncertainty:
+- Essential observations, measurements, and comparisons:
+- Supporting diagnostics and the uncertainty each addresses:
+- Expected patterns, if justified, and genuinely unknown outcomes:
 - Conditions covered by the intended generalization and conditions not yet tested:
 
 # Experiment
@@ -69,21 +71,30 @@ updated_at: "<ISO 8601 timestamp with UTC offset>"
 
 ### Scientific setup
 
-- Phase: `Planning | Pilot | Running | Awaiting Decision | Awaiting Expansion Approval | Expanded | Analysis`
-- Model and checkpoint:
+- Phase: `<current execution or analysis phase; pilot and expansion are optional>`
+- Model and checkpoint, if relevant:
 - Dataset, version, split, preprocessing, and evaluation quantity:
 - Hardware, precision, and distributed topology:
 - Software and code identity:
 - Hyperparameters, seeds, context length, and procedure:
 - Comparison groups, measurement unit, and aggregation:
 
-### Pilot gate and budget, if requested
+### Question and protocol history
+
+| Version and timing | Question, hypothesis, or protocol change | Triggering evidence or reason | Effect on comparisons and claim scope | Protocol or prior-version link |
+| --- | --- | --- | --- | --- |
+
+Preserve earlier expectations and protocols. Identify post-observation changes;
+record actual preregistration only when it exists. Revisions can stay in this
+record, and unresolved questions do not require a terminal verdict.
+
+### Pilot observations and budget, if requested
 
 - Representative condition and selection reason:
-- Frozen gate:
-- Planned pilot runs: `N/A | <number, maximum 4 total>`
+- Intended observations and predeclared gate, if any:
+- Authorized runs or adaptive execution boundary:
 - Estimated wall-clock and compute cost:
-- Expansion, revision, and stop observations:
+- Informative next observations and resource stop boundary:
 
 ### Glossary
 
@@ -96,35 +107,37 @@ updated_at: "<ISO 8601 timestamp with UTC offset>"
 
 ### Procedure
 
-1. <existing entrypoint and frozen experimental step>
+1. <the attempt's purpose, current protocol version, and existing entrypoint or analysis step>
 
 ### Run ledger
 
-| Run | Phase | Condition and seed | Command/config | Artifact/log | Outcome | Counts toward pilot budget |
+| Attempt/run | Protocol version | Conditions and seed, if applicable | Command/config or analysis | Artifact/log | Validity and observations | Actual resource use |
 | --- | --- | --- | --- | --- | --- | --- |
 
 ### Pilot review and decision, if performed
 
 - Raw result:
 - Validity review:
-- Pilot gate classification under selected conditions: `N/A | Pending | SUPPORTED | REJECTED | INVALID | INCONCLUSIVE`
+- Pilot gate classification, if a gate exists: `N/A | Pending | SUPPORTED | REJECTED | INVALID | INCONCLUSIVE`
+- Exploratory findings and unexpected reactions:
+- Which judgment changed, or why the observation was inconclusive:
 - Scope of the decision and evidence still needed for a broader claim:
 - Reviewer: `assistant | user`
-- Next action and user decision:
+- Next action and reason; user decision when one is needed beyond the current scope:
 
 ### Expansion approval, if requested
 
 - Proposed additional runs, time, and compute:
-- Early-stop gate:
+- Early-stop condition or resource boundary:
 - Approval: `Not Requested | Pending | Approved | Declined`
 - Approved scope and timestamp:
 
 ### Execution record
 
-- Actual steps and deviations from the frozen plan:
+- Actual steps, protocol versions, and material deviations:
 - Reproducibility metadata, paths, logs, and artifacts:
 - Result artifact provenance: <evidence linking result files to the claimed run, model, data, and settings, or unverified links and their limits on the conclusion>
-- Failed gate and reason skipped items are `SKIPPED` or `NOT_APPLICABLE`:
+- Failed, invalid, skipped, and unmeasured items with their reasons:
 
 # Experiment Result
 
@@ -142,15 +155,17 @@ updated_at: "<ISO 8601 timestamp with UTC offset>"
 
 ## Analysis
 
-**Conclusion:** <a scoped conclusion stating the pilot or expanded evidence stage and conditions actually verified>
+**Conclusion:** <the current finding or uncertainty, its evidence scope, and the conditions actually examined>
 
-- Observations consistent with prior expectations and their evidence, or why they cannot be assessed:
-- Observations differing from prior expectations and their evidence, or why they cannot be assessed:
-- Benefits established against the experiment's goal, or why they cannot be assessed:
-- Limitations established against the experiment's goal, or why they cannot be assessed:
+- Expected and unexpected observations, when an expectation was recorded:
+- Useful patterns, negative findings, and unexplained exceptions:
+- Changed, retained, or abandoned explanations and the evidence behind that judgment:
+- Limitations that change the conclusion:
 
 - Observation → interpretation → decision or design implication:
-- Pilot gate outcome versus scientific inference, if pilot evidence was used:
+- Pilot gate outcome versus scientific inference, when a gate was specified:
 - Alternative explanations and confounders:
 - Evidence dependencies, conflicts, and claim boundary:
-- Conditions actually tested, untested generalization, and user-decided next step:
+- Conditions actually tested and untested generalization:
+- Open research cues and the reason for the next inquiry or for shelving it:
+- Record closure, if requested: <work finished within the declared scope, remaining scientific questions, and any linked follow-up>

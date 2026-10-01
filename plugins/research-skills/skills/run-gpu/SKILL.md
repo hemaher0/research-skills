@@ -10,8 +10,11 @@ checkout owns one uv environment, and every linked worktree uses that same
 environment while importing its own source first. Conda is not an execution or
 fallback environment.
 
-When project instructions configure work items, preserve the GPU request,
-environment and code identity, observed result, and next action there. Use an
+Follow the project's work-history capture policy. When it calls for a work-item
+update, preserve the GPU request, environment and code identity, observed
+result, and next action there. A configured storage location does not enable
+capture; selective or disabled capture does not prevent authorized GPU work
+or its required execution evidence. Use an
 available document router for the update; if none is available, use project
 instructions, the local `.docs-schema` when present, and ordinary file tools.
 This trace does not create an experiment record or change the GPU execution
@@ -19,14 +22,17 @@ boundary below.
 
 ## Stable entrypoint and permission
 
-Read the target repository's `AGENTS.md` and `AGENTS.local.md`. Use the local
-file's execution environment for the current host to identify the main
-checkout, Python environment type, GPU allocation, and stable wrapper path.
-Verify the main checkout and worktree relationship with Git and confirm the
-environment is the shared uv `.venv` required by this wrapper. A local setting
-for another Python environment does not make this wrapper support it.
+Read effective project instructions and native environment/scheduler
+configuration; use a selected host profile in `AGENTS.local.md` when present.
+Resolve the main checkout and worktree relationship from actual Git state,
+confirm the shared uv `.venv`, and inspect the current permitted allocation.
+The dependency declarations, scheduler and host approval controls remain
+authoritative; a local snapshot cannot grant devices or execution permission.
+Host constraints can narrow the current allocation, never expand it.
+No local file is needed when those sources already resolve the environment.
+A configured alternative Python environment does not change wrapper support.
 
-Verify the recorded wrapper path agrees with the main checkout. The expected
+Derive and verify the stable wrapper path from the main checkout. Its fixed
 location is:
 
 ```text
@@ -100,7 +106,9 @@ The supported modes are:
 
 Omitting `--devices` preserves the existing `CUDA_VISIBLE_DEVICES`, including a
 scheduler or container allocation. Use `--devices` only for devices authorized in
-the local environment. The wrapper does not choose a default mask or worker count.
+the current allocation or configured host constraint. The wrapper does not
+choose a default mask or worker count. Keep job/device observations in the
+existing run/work record rather than treating local configuration as inventory.
 Specify `--nproc-per-node` to match the intended visible devices.
 
 ## Verification and diagnosis

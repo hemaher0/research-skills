@@ -6,21 +6,25 @@ description: Use when creating or continuing a persistent AI/ML experiment recor
 # Experiments
 
 Manage one requested, persistent experiment record. Its local Markdown document
-holds the plan, execution history, and final analysis. A question about existing
+holds the working question, protocol versions, execution history, evidence, and
+current analysis. A question about existing
 results, a pilot, or a report does not require this record. Do not create one
 unless the user asks to manage the experiment over time or requests a durable
 experiment document.
 
-Separately, if project instructions configure a canonical work-item repository,
-preserve every request and discussion, protocol decision, experiment link,
-evidence, code SHA, and next action there. Check whether a compatible
+Separately, follow the project's work-history capture policy. When it calls
+for a work-item update, preserve the covered requests and discussions, protocol
+decisions, experiment links, evidence, code SHA, and next action there. A
+configured repository alone does not enable capture or require every turn;
+selective or disabled capture leaves this requested experiment record and its
+required provenance unchanged. Check whether a compatible
 document-routing skill is actually available before using it; no named router
 is a prerequisite. A router handles work-item and experiment-document file
-operations; this skill owns the experiment's scientific content, template,
+operations; this skill owns record identity, provenance, lineage, template,
 configured root, and lifecycle. If no router is available, use project
 `AGENTS.md`, the local `.docs-schema` when present, and ordinary file tools.
 The work item does not replace this experiment record.
-When parallel agents run independent research tasks, give each a linked child
+When capture is required for parallel research tasks, give each a linked child
 work item if the local schema supports one; each agent records its own timeline
 and returns its path, protocol decisions, evidence, and code SHA. The
 coordinator owns the root and shared Git integration. An experiment document
@@ -40,7 +44,8 @@ project or separate document repository; that location does not authorize
 reading or executing code from a second code repository. Keep the work item and
 experiment record linked without treating them as the same document.
 
-This skill owns the research protocol, evidence, and record lifecycle, not implementation. Do not create, modify,
+This skill records the research protocol and evidence without independently
+choosing the research direction or implementing it. Do not create, modify,
 or delete source code, notebooks, tests, experiment scripts, dependencies, or
 runtime configuration as a side effect of managing it. Use existing entrypoints
 for authorized execution. If a required capability is missing, record the
@@ -67,9 +72,14 @@ When a bounded preliminary run is requested, use the independent
 [pilot skill](../pilot/SKILL.md). A pilot can run without this record; when both
 are requested, place its decisions and evidence in the existing record.
 
-A standalone interpretation or report uses the independent
-[report skill](../report/SKILL.md) and need not create or update an experiment
-record.
+A standalone result analysis uses [interpretation](../interpretation/SKILL.md),
+and a requested presentation uses [report](../report/SKILL.md). Neither requires
+a persistent experiment record. Use [evidence-based-research](../evidence-based-research/SKILL.md) for
+iterative direction, [probing](../probing/SKILL.md) for hypothesis development,
+[exploration](../exploration/SKILL.md) for precedents, and
+[digging](../digging/SKILL.md) or [reinterpretation](../reinterpretation/SKILL.md)
+when the current uncertainty calls for them. Record their relevant decisions
+when this record is being managed; there is no mandatory sequence.
 
 If the request separately includes an update to reader-facing repository
 documentation, use an available document router; otherwise follow the
@@ -78,24 +88,34 @@ a documentation update from the experiment alone.
 
 ## Scientific contract
 
-- Define one central question and a falsifiable hypothesis. Separate the expected
-  observation, possible mechanism, decisive gate, alternative explanations, and
-  confounders before execution.
-- Use the minimum metrics and comparisons needed to decide the hypothesis. Mark
-  each additional analysis as primary evidence or a diagnostic observation.
+- Record the current question, purpose, relevant cues, and unresolved
+  uncertainty. A partial hypothesis or an exploratory question is sufficient;
+  an expected numerical result or binary decision gate is not compulsory.
+- Before each attempt, record the protocol, conditions, observations to collect,
+  justified expectations, and authorized resource boundary. Preserve required
+  comparisons and replications. Distinguish exploratory from confirmatory work.
 - Read direct primary research or official experimental material when the design
   depends on prior work. Link the relevant claim, equation, figure, or protocol and
   state what is reused or changed. Mark unsupported methods as original proposals.
-- Do not revise a preregistered hypothesis or gate after seeing results. Record a
-  new idea as post-observation and leave it for a user-decided revision or child
-  experiment.
-- Treat a pilot classification as a decision about its preregistered gate under
-  the selected conditions. Check run validity, gate outcome, and strength of the
-  scientific inference separately. A passed gate can justify a next step without
+- Preserve earlier questions, hypotheses, expectations, and protocol versions.
+  Record a change with its timing, evidence, rationale, affected comparisons,
+  and implications for the next attempt. Identify post-observation ideas as
+  such; do not rewrite them as predeclared. Only call a protocol preregistered
+  when actual registration exists. A project-required frozen protocol remains
+  authoritative for its confirmatory comparisons.
+- A revised question or method can continue in this record within the authorized
+  inquiry. A separately managed execution or independently tracked question may
+  justify a linked child; every revision does not require one or new approval.
+- Treat a pilot classification, when specified, as a decision about its
+  predeclared gate under the selected conditions. Check run validity, gate
+  outcome, and strength of scientific inference separately. A passed gate can
+  justify a next step without
   establishing robustness, mechanism, or generality; a failed gate under limited
   conditions does not by itself refute the hypothesis everywhere.
-- Distinguish observations, interpretations, implications, and untested claims.
-  Match conclusion strength to the measured conditions and dependent evidence.
+- Preserve [interpretation](../interpretation/SKILL.md)'s distinctions among
+  observations, explanations, implications, and open claims. Store linked
+  artifacts and the judgment they informed, including negative and unexpected
+  findings. Closing this record does not resolve every scientific question.
 - For supplied or reused result artifacts, verify the link to their claimed
   source before attributing values to a model, run, dataset, or intervention.
   Record the supporting run or export evidence, or mark the link unverified.
@@ -113,9 +133,12 @@ a documentation update from the experiment alone.
 
 ## Local source and completion
 
-Choose the experiment-document root from the local `AGENTS.local.md` setting
-when it specifies a path, then the repository default in `AGENTS.md`. Resolve a
-relative document path from the main checkout, never from an isolated code
+Resolve shared experiment-document locations from effective project instructions
+or their existing configuration source. Use a selected local `AGENTS.local.md`
+path override when it specifies a path within project policy; otherwise use
+the shared setting. No local file is needed for a project setting or default.
+Empty/placeholder or `Use Repository Default` overrides leave that setting
+in force. Resolve a relative document path from the main checkout, never from an isolated code
 worktree; use an absolute path as written. Use the same precedence for an
 experiment artifact root when the local file specifies an override. When
 neither file specifies a document root,
@@ -161,16 +184,20 @@ Use these document states:
 
 | State | Meaning |
 | --- | --- |
-| `Planned` | Protocol is frozen; no training or evaluation has started. |
+| `Planned` | The question and initial protocol are being prepared; no training or evaluation has started. |
 | `Running` | Authorized execution is in progress without a separate pilot phase. |
 | `Pilot Running` | An explicitly requested bounded pilot is in progress. |
-| `Awaiting Decision` | Pilot evidence requires a user decision before more execution. |
+| `Awaiting Decision` | Progress needs a consequential direction, resource, or scope decision beyond the current authorization. |
 | `Awaiting Expansion Approval` | Pilot passed and the larger budget has not been approved. |
 | `Expanded Running` | The approved post-pilot experiment is in progress. |
-| `Completed` | Evidence and final analysis are complete. |
+| `Completed` | Work for this record's declared scope is finished and reviewed; findings and open scientific questions are preserved. |
 | `Stopped` | The user ended the experiment without completing the planned evidence. |
 
 Do not insert a pilot merely to move between `Planned`, `Running`, and `Completed`.
+`Pilot Running`, `Awaiting Expansion Approval`, and `Expanded Running` remain
+available for records that track those execution phases; they do not impose a
+research sequence. Use `Running` for ordinary authorized iterations. An open
+hypothesis is not itself a reason to leave a finished record awaiting approval.
 
 ### Create or continue the record
 
@@ -249,26 +276,15 @@ setup parents, children, and related documents in the experiment record.
 
 ### Evidence and claims
 
-Resolve the primary conclusion and numeric values from actual artifacts rather than
-conversation memory. If primary sources conflict, expose the conflict and leave the
-conclusion unresolved. Never fill a missing result from an expectation, use zero for
-an unmeasured value, or rewrite a preregistered hypothesis after observing results.
+Use [interpretation](../interpretation/SKILL.md) for scientific analysis and
+[report](../report/SKILL.md) when presenting it. This skill preserves their
+evidence links and claim boundaries in the managed record, together with the
+history of which observation changed which judgment. A contradiction,
+inconclusive comparison, or unchanged judgment belongs in that history too.
 
-Keep these levels distinct:
-
-1. observed result;
-2. interpretation consistent with the result;
-3. decision or design implication;
-4. limitation or untested claim.
-
-Repeated samples, seeds, or closely related metrics improve precision but do not
-automatically provide a different kind of evidence. Identify shared assumptions and
-failure modes. Do not turn correlational, geometric, surrogate, or single-condition
-evidence into causal, functional, downstream, or generalization claims.
-
-For pilot-only evidence, report three separate judgments: whether the run is
-valid, whether the predeclared gate was met, and what the observed conditions
-actually support. `SUPPORTED` and `REJECTED` name pilot-gate outcomes; neither
+For pilot-only evidence, report run validity, what the observed conditions
+actually support, and whether a predeclared gate was met when one exists.
+`SUPPORTED` and `REJECTED` name pilot-gate outcomes; neither
 is an unrestricted verdict on the hypothesis. State the selected conditions,
 material missing comparisons or replications, plausible alternatives, and the
 next observation needed for a broader claim. A record may be `Completed` at
@@ -281,8 +297,11 @@ with its main conclusion or, before completion, its current status and unresolve
 question. Make each section understandable to an AI/ML expert who knows the field
 but has not read another section or this repository.
 
-- `Motivation`, `Hypothesis`, and `Expected Result` retain their preregistered
-  content. Mark retrospective reconstruction explicitly when no prior record exists.
+- `Motivation`, `Hypothesis`, and `Expected Result` describe the current question,
+  provisional explanation, and intended observations. Preserve earlier versions
+  with their timing and reasons for change. A hypothesis or expectation that is
+  not yet defined is stated as open, not fabricated. Mark retrospective
+  reconstruction explicitly when no prior record exists.
 - `Experiment / Setup` contains scientific conditions, terminology, lineage,
   inherited settings, code/version identity, and execution environment.
 - `Experiment / Experiment` contains the protocol, commands, run ledger, paths,
@@ -291,7 +310,8 @@ but has not read another section or this repository.
 - `Experiment Result / Results` contains only measurements and the context needed
   to understand how they bear on the hypothesis.
 - `Experiment Result / Analysis` states the scope-qualified conclusion, evidence,
-  interpretation, implications, alternatives, uncertainty, and claim boundary.
+  interpretation, implications, alternatives, uncertainty, and claim boundary,
+  including abandoned explanations and unresolved research cues.
   If result origin is unverified, open with that limitation and keep comparisons
   conditional on the artifact rather than attributing improvement to its claimed
   source.
@@ -325,13 +345,13 @@ Before setting `Completed`, confirm:
 - each section begins with its own conclusion and contains enough local context;
 - the claim stays within measured models, data, seeds, conditions, and evidence;
 - a pilot-only conclusion identifies the gate outcome separately from the
-  scientific inference and names what was not tested;
+  scientific inference and names what was not tested, when a gate was specified;
 - failed, skipped, invalid, and unmeasured items are represented accurately;
 - repository-specific terminology is replaced or defined;
 - execution details appear only in the two `Experiment` subsections;
-- the Analysis separates observations that matched expectations, observations
-  that differed, benefits, and limitations, or states why an item cannot be
-  assessed;
+- earlier expectations and actual observations are distinguishable; findings,
+  unexplained reactions, changed judgments, and remaining questions are
+  preserved without requiring a successful or fully resolved study;
 - the current checkout identity, SHA, dirty state, artifact paths, and timestamps
   are current; branch, worktree, and pilot/expansion decisions are recorded when
   those actions occurred.

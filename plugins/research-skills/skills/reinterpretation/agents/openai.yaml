@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reinterpretation"
+  short_description: "Recombine research cues into new connections"
+  default_prompt: "Use $reinterpretation to align these research cues and examine whether another relationship, concept, or question makes them more useful."

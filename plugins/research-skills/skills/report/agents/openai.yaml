@@ -1,4 +1,4 @@
 interface:
   display_name: "Report"
-  short_description: "Interpret research evidence or write a report"
-  default_prompt: "Use $report to interpret the results already available within the evidence and present them in the requested format."
+  short_description: "Communicate research findings and open questions"
+  default_prompt: "Use $report to present the current findings, evidence limits, and open questions faithfully in the requested format."

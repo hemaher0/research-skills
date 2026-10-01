@@ -1,0 +1,4 @@
+interface:
+  display_name: "Interpretation"
+  short_description: "Analyze results and bound scientific conclusions"
+  default_prompt: "Use $interpretation to analyze the available results, examine meaningful differences and exceptions, and state what the evidence actually supports."

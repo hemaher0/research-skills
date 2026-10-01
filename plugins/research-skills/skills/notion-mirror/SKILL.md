@@ -9,15 +9,21 @@ Mirror a local experiment document only when the user requests this action and
 the document has reached `Completed`. Completing an experiment does not trigger
 publication. The local Markdown file remains the source of truth; the Notion
 page receives a complete mirror after the local document's final review.
+`Completed` describes the local record's scoped work and review, not resolution
+of every hypothesis. Preserve its open questions, negative findings, and
+provisional conclusions in the mirror.
 Read the completed record directly; running the `experiments` skill is not a
 prerequisite. Add mirror metadata to the document's YAML frontmatter only when
 the mirror is requested.
 
 Route local experiment-record metadata edits through an available document
 router, passing the status rules below; the Notion page operation remains this
-skill's responsibility. When project instructions configure a canonical work
-item, preserve the mirror request, destination, result, source link, and next
-action there too. If no router is available, use project instructions and the
+skill's responsibility. Follow the project's work-history capture policy.
+When it calls for a work-item update, preserve the mirror request, destination,
+result, source link, and next action there too. A configured storage location
+does not enable capture; selective or disabled capture does not prevent the
+requested mirror or its required experiment metadata. If no router is
+available, use project instructions and the
 configured experiment template and location for record edits, plus the local
 `.docs-schema` when present and ordinary file tools for a configured work-item
 trace. Do not create another work-item history or experiment record for the
@@ -25,8 +31,17 @@ mirror.
 
 ## Destination contract
 
-Read the exact Notion mirror destination and its type from the target
-repository's `AGENTS.local.md`. The destination identifies where experiment
+Resolve the Notion mirror configuration from effective project instructions
+and their designated integration source. Read a selected private configuration
+override in `AGENTS.local.md` when present; a local file is not required.
+Unset/placeholder or `Not Configured` override values leave an established
+project configuration in force; do not treat them as a different destination.
+Use existing configured destination fields without copying or silently moving
+them during installation. The selected configuration declares the exact
+destination URL/type and applicable title/property mappings; credentials stay
+with the connector. A private override must respect the project's storage and
+publication boundary, and cannot authorize a mirror or choose another audience.
+The destination identifies where experiment
 pages belong; the current record's `notion_url`, when present, identifies the
 page to update. Fetch the destination immediately before writing and check its
 current structure and access.
@@ -63,7 +78,7 @@ conclusions, and claim boundaries. Do not create a summary-only or
 independently edited Notion version. Do not reverse-sync Notion edits into the
 local source unless the user asks for that separate operation.
 
-For a data source, use only properties declared in `AGENTS.local.md` and
+For a data source, use only properties declared in that selected configuration and
 confirmed in the fetched schema. Map `Completed` to the configured Notion
 status. Populate relation properties only when their pages already exist and
 the local links identify them unambiguously; never create another experiment

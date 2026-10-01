@@ -1,0 +1,4 @@
+interface:
+  display_name: "Digging"
+  short_description: "Decompose a research problem and its uncertain links"
+  default_prompt: "Use $digging to trace the assumptions, measurements, and implementation behind this problem and identify what remains unexplained."

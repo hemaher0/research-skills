@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evidence-Based Research"
+  short_description: "Advance inquiry through evidence-led iterations"
+  default_prompt: "Use $evidence-based-research to choose an informative next attempt, inspect the evidence it produces, and revise the explanation or question as needed."

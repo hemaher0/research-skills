@@ -1,0 +1,4 @@
+interface:
+  display_name: "Exploration"
+  short_description: "Investigate scientific precedents and their limits"
+  default_prompt: "Use $exploration to investigate the closest precedents, their evidence and conditions, and the unresolved questions relevant to this research."
