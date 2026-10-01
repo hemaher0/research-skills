@@ -1,0 +1,4 @@
+interface:
+  display_name: "Notion Mirror"
+  short_description: "Mirror a completed experiment document to Notion"
+  default_prompt: "Use $notion-mirror to mirror the completed local experiment document to its configured Notion destination."

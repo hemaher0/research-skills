@@ -1,0 +1,16 @@
+# Local agent configuration and working artifacts (marketplace metadata is tracked).
+/.codex/
+/references/
+/.worktrees/
+
+# Python and editor artifacts.
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.DS_Store
+
+# Local credentials.
+.env
+.env.*
+!.env.example

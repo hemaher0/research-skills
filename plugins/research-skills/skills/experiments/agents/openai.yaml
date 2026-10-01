@@ -1,0 +1,4 @@
+interface:
+  display_name: "Experiments"
+  short_description: "Manage a persistent AI/ML experiment record"
+  default_prompt: "Use $experiments to create this research's experiment record and manage its plan and execution evidence over time."

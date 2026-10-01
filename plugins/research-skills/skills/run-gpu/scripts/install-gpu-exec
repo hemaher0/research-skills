@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+repository=
+
+usage() {
+    echo 'usage: install-gpu-exec --repository MAIN_CHECKOUT'
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        --repository)
+            if [[ $# -lt 2 || -z ${2:-} ]]; then
+                usage >&2
+                exit 64
+            fi
+            repository=$2
+            shift 2
+            ;;
+        *)
+            usage >&2
+            exit 64
+            ;;
+    esac
+done
+
+if [[ -z $repository || ! -d $repository ]]; then
+    echo "main checkout is not a directory: ${repository:-<unset>}" >&2
+    exit 66
+fi
+repository=$(realpath -- "$repository")
+if ! checkout=$(git -C "$repository" rev-parse --show-toplevel 2>/dev/null); then
+    echo "main checkout is not a Git repository: $repository" >&2
+    exit 66
+fi
+checkout=$(realpath -- "$checkout")
+if [[ $repository != "$checkout" ]]; then
+    echo "--repository must name the checkout root: $repository" >&2
+    exit 64
+fi
+
+target_dir=$repository/.agents/bin
+mkdir -p -- "$target_dir"
+for name in gpu-exec gpu_probe.py; do
+    target=$target_dir/$name
+    if [[ -L $target || ( -e $target && ! -f $target ) ]]; then
+        echo "refusing to replace non-regular path: $target" >&2
+        exit 73
+    fi
+done
+
+install -m 0755 -- "$script_dir/gpu-exec" "$target_dir/gpu-exec"
+install -m 0644 -- "$script_dir/gpu_probe.py" "$target_dir/gpu_probe.py"
+echo "$target_dir/gpu-exec"

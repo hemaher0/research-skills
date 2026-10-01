@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pilot"
+  short_description: "Plan or run a bounded research pilot"
+  default_prompt: "Use $pilot to inspect the existing entrypoint and plan the smallest representative run that can assess this hypothesis."

@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+main_checkout="$(realpath -- "$script_dir/../..")"
+shared_venv="$main_checkout/.venv"
+workdir=$main_checkout
+devices=
+devices_set=false
+
+usage() {
+    echo 'usage: gpu-exec [--workdir PATH] [--devices LIST] {probe|python|pytest|torchrun|nvidia-smi} [args...]'
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        --devices)
+            if [[ $# -lt 2 ]]; then
+                usage >&2
+                exit 64
+            fi
+            devices=$2
+            devices_set=true
+            shift 2
+            ;;
+        --workdir)
+            if [[ $# -lt 2 || -z ${2:-} ]]; then
+                usage >&2
+                exit 64
+            fi
+            workdir=$2
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -*)
+            usage >&2
+            exit 64
+            ;;
+        *) break ;;
+    esac
+done
+
+mode=${1:-}
+if [[ -z $mode ]]; then
+    usage >&2
+    exit 64
+fi
+shift
+
+case $mode in
+    probe)
+        if [[ $# -ne 0 ]]; then
+            usage >&2
+            exit 64
+        fi
+        ;;
+    python|pytest|torchrun|nvidia-smi) ;;
+    *)
+        echo "unsupported GPU execution mode: $mode" >&2
+        usage >&2
+        exit 64
+        ;;
+esac
+
+if [[ ! -d $workdir ]]; then
+    echo "GPU workdir is not a directory: $workdir" >&2
+    exit 66
+fi
+resolved_workdir=$(realpath -- "$workdir")
+
+if ! command -v git >/dev/null 2>&1; then
+    echo 'git is not available on PATH' >&2
+    exit 69
+fi
+if ! checkout=$(git -C "$resolved_workdir" rev-parse --show-toplevel 2>/dev/null); then
+    echo "GPU workdir is not in the configured repository: $resolved_workdir" >&2
+    exit 77
+fi
+checkout=$(realpath -- "$checkout")
+main_common=$(git -C "$main_checkout" rev-parse --path-format=absolute --git-common-dir)
+worktree_common=$(git -C "$checkout" rev-parse --path-format=absolute --git-common-dir)
+main_common=$(realpath -- "$main_common")
+worktree_common=$(realpath -- "$worktree_common")
+if [[ $main_common != "$worktree_common" ]]; then
+    echo "GPU workdir is not the main checkout or one of its linked worktrees: $resolved_workdir" >&2
+    exit 77
+fi
+
+case $resolved_workdir in
+    "$checkout"|"$checkout"/*) ;;
+    *)
+        echo "GPU workdir resolves outside its checkout: $resolved_workdir" >&2
+        exit 77
+        ;;
+esac
+cd -- "$resolved_workdir"
+
+# Preserve scheduler/container allocation unless the caller explicitly overrides it.
+if [[ $devices_set == true ]]; then
+    export CUDA_VISIBLE_DEVICES=$devices
+fi
+
+if [[ $mode == nvidia-smi ]]; then
+    exec nvidia-smi "$@"
+fi
+
+if ! command -v uv >/dev/null 2>&1; then
+    echo 'uv is not available on PATH' >&2
+    exit 69
+fi
+if [[ ! -x $shared_venv/bin/python ]]; then
+    echo "shared uv environment is missing or incomplete: $shared_venv" >&2
+    exit 69
+fi
+if [[ ! -f $main_checkout/uv.lock || ! -f $checkout/uv.lock ]]; then
+    echo 'the main checkout and selected worktree must both contain uv.lock' >&2
+    exit 78
+fi
+if ! cmp -s -- "$main_checkout/uv.lock" "$checkout/uv.lock"; then
+    echo 'the selected worktree uv.lock differs from the shared environment lock' >&2
+    echo 'update the shared environment from the main checkout before GPU execution' >&2
+    exit 78
+fi
+
+# The main checkout owns the only environment. Worktree source takes precedence
+# over the editable install recorded in that environment.
+export VIRTUAL_ENV=$shared_venv
+unset CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_PROMPT_MODIFIER
+if [[ -d $checkout/src ]]; then
+    export PYTHONPATH="$checkout/src${PYTHONPATH:+:$PYTHONPATH}"
+fi
+
+# Validate dependency declarations without changing the lock or environment.
+uv lock --check
+
+case "$mode" in
+    probe)
+        exec uv run --active --no-sync python "$script_dir/gpu_probe.py"
+        ;;
+    python)
+        exec uv run --active --no-sync python "$@"
+        ;;
+    pytest)
+        exec uv run --active --no-sync python -m pytest "$@"
+        ;;
+    torchrun)
+        exec uv run --active --no-sync python -m torch.distributed.run "$@"
+        ;;
+esac
