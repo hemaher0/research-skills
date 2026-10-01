@@ -7,9 +7,19 @@ shared_venv="$main_checkout/.venv"
 workdir=$main_checkout
 devices=
 devices_set=false
+backend=uv
+conda_prefix=
+conda_spec=
 
 usage() {
-    echo 'usage: gpu-exec [--workdir PATH] [--devices LIST] {probe|python|pytest|torchrun|nvidia-smi} [args...]'
+    echo 'usage: gpu-exec [--workdir PATH] [--devices LIST] [--backend uv|conda] [--conda-prefix ABS_PATH] [--conda-spec REL_PATH] {probe|python|pytest|torchrun|nvidia-smi} [args...]'
+}
+
+require_value() {
+    if [[ $# -lt 2 || -z ${2:-} || ${2:-} == --* ]]; then
+        usage >&2
+        exit 64
+    fi
 }
 
 while [[ $# -gt 0 ]]; do
@@ -35,6 +45,21 @@ while [[ $# -gt 0 ]]; do
             workdir=$2
             shift 2
             ;;
+        --backend)
+            require_value "$@"
+            backend=$2
+            shift 2
+            ;;
+        --conda-prefix)
+            require_value "$@"
+            conda_prefix=$2
+            shift 2
+            ;;
+        --conda-spec)
+            require_value "$@"
+            conda_spec=$2
+            shift 2
+            ;;
         --)
             shift
             break
@@ -46,6 +71,20 @@ while [[ $# -gt 0 ]]; do
         *) break ;;
     esac
 done
+
+case $backend in
+    uv)
+        if [[ -n $conda_prefix || -n $conda_spec ]]; then
+            echo 'Conda options require --backend conda' >&2
+            exit 64
+        fi
+        ;;
+    conda) ;;
+    *)
+        echo "unsupported environment backend: $backend" >&2
+        exit 64
+        ;;
+esac
 
 mode=${1:-}
 if [[ -z $mode ]]; then
@@ -111,46 +150,82 @@ if [[ $mode == nvidia-smi ]]; then
     exec nvidia-smi "$@"
 fi
 
-if ! command -v uv >/dev/null 2>&1; then
-    echo 'uv is not available on PATH' >&2
-    exit 69
-fi
-if [[ ! -x $shared_venv/bin/python ]]; then
-    echo "shared uv environment is missing or incomplete: $shared_venv" >&2
-    exit 69
-fi
-if [[ ! -f $main_checkout/uv.lock || ! -f $checkout/uv.lock ]]; then
-    echo 'the main checkout and selected worktree must both contain uv.lock' >&2
-    exit 78
-fi
-if ! cmp -s -- "$main_checkout/uv.lock" "$checkout/uv.lock"; then
-    echo 'the selected worktree uv.lock differs from the shared environment lock' >&2
-    echo 'update the shared environment from the main checkout before GPU execution' >&2
-    exit 78
-fi
-
-# The main checkout owns the only environment. Worktree source takes precedence
-# over the editable install recorded in that environment.
-export VIRTUAL_ENV=$shared_venv
-unset CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_PROMPT_MODIFIER
+# Select the project environment explicitly instead of inheriting activation.
+unset CONDA_PREFIX CONDA_DEFAULT_ENV CONDA_PROMPT_MODIFIER CONDA_SHLVL
+for prefix_variable in ${!CONDA_PREFIX_@}; do
+    unset "$prefix_variable"
+done
 if [[ -d $checkout/src ]]; then
     export PYTHONPATH="$checkout/src${PYTHONPATH:+:$PYTHONPATH}"
 fi
 
-# Validate dependency declarations without changing the lock or environment.
-uv lock --check
+if [[ $backend == uv ]]; then
+    if ! command -v uv >/dev/null 2>&1; then
+        echo 'uv is not available on PATH' >&2
+        exit 69
+    fi
+    if [[ ! -x $shared_venv/bin/python ]]; then
+        echo "shared uv environment is missing or incomplete: $shared_venv" >&2
+        exit 69
+    fi
+    if [[ ! -f $main_checkout/uv.lock || ! -f $checkout/uv.lock ]]; then
+        echo 'the main checkout and selected worktree must both contain uv.lock' >&2
+        exit 78
+    fi
+    if ! cmp -s -- "$main_checkout/uv.lock" "$checkout/uv.lock"; then
+        echo 'the selected worktree uv.lock differs from the shared environment lock' >&2
+        echo 'update the shared environment from the main checkout before GPU execution' >&2
+        exit 78
+    fi
+    export VIRTUAL_ENV=$shared_venv
+    # Validate declarations without changing the lock or environment.
+    uv lock --check
+    runner=(uv run --active --no-sync python)
+else
+    if [[ $conda_prefix != /* ]]; then
+        echo '--backend conda requires --conda-prefix with an absolute environment path' >&2
+        exit 64
+    fi
+    if ! command -v conda >/dev/null 2>&1; then
+        echo 'conda is not available on PATH' >&2
+        exit 69
+    fi
+    if [[ ! -x $conda_prefix/bin/python || ! -f $conda_prefix/conda-meta/history ]]; then
+        echo "Conda environment is missing or incomplete: $conda_prefix" >&2
+        exit 69
+    fi
+    conda_prefix=$(realpath -- "$conda_prefix")
+    if [[ -n $conda_spec ]]; then
+        case $conda_spec in
+            /*|..|../*|*/../*|*/..)
+                echo '--conda-spec must be a repository-relative file path' >&2
+                exit 64
+                ;;
+        esac
+        if [[ ! -f $main_checkout/$conda_spec || ! -f $checkout/$conda_spec ]]; then
+            echo "Conda specification is missing from the main checkout or selected worktree: $conda_spec" >&2
+            exit 78
+        fi
+        if ! cmp -s -- "$main_checkout/$conda_spec" "$checkout/$conda_spec"; then
+            echo "the selected worktree Conda specification differs: $conda_spec" >&2
+            exit 78
+        fi
+    fi
+    unset VIRTUAL_ENV
+    runner=(conda run --no-capture-output --prefix "$conda_prefix" python)
+fi
 
 case "$mode" in
     probe)
-        exec uv run --active --no-sync python "$script_dir/gpu_probe.py"
+        exec "${runner[@]}" "$script_dir/gpu_probe.py"
         ;;
     python)
-        exec uv run --active --no-sync python "$@"
+        exec "${runner[@]}" "$@"
         ;;
     pytest)
-        exec uv run --active --no-sync python -m pytest "$@"
+        exec "${runner[@]}" -m pytest "$@"
         ;;
     torchrun)
-        exec uv run --active --no-sync python -m torch.distributed.run "$@"
+        exec "${runner[@]}" -m torch.distributed.run "$@"
         ;;
 esac

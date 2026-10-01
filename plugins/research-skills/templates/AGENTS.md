@@ -26,7 +26,10 @@ Use the repository's native dependency/environment declarations, setup guide,
 and scheduler/container configuration. Inspect the actual main checkout,
 environment and available allocation when needed; record run-specific revision,
 job/device allocation, and evidence in the experiment or work record. The GPU
-skill and wrapper own their stable entrypoint and shared uv environment contract.
+skill and wrapper own their stable entrypoint and shared uv or Conda environment
+contract. Select the backend through the native project setup procedure; retain
+the same environment across linked worktrees. Host-specific Conda prefix
+overrides belong in existing host configuration when needed.
 
 ## Notion Mirror Configuration (when selected)
 

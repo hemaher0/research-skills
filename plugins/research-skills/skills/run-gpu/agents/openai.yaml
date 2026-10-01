@@ -1,4 +1,4 @@
 interface:
   display_name: "GPU Execution"
-  short_description: "Run CUDA work from one shared uv environment"
-  default_prompt: "Use $run-gpu through this repository's stable wrapper and shared uv environment, including from linked worktrees."
+  short_description: "Run CUDA work in a shared uv or Conda environment"
+  default_prompt: "Use $run-gpu through this repository's stable wrapper and selected shared uv or Conda environment, including from linked worktrees."

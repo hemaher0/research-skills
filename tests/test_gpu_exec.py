@@ -253,6 +253,169 @@ sys.exit(int(os.environ.get("GPU_TEST_EXIT", "0")))
         self.assertEqual(result.returncode, 69, result.stderr)
         self.assertIn("shared uv environment", result.stderr)
 
+    def add_conda_environment(self):
+        prefix = self.root / "shared conda environment"
+        (prefix / "bin").mkdir(parents=True)
+        (prefix / "bin/python").symlink_to(sys.executable)
+        (prefix / "conda-meta").mkdir()
+        (prefix / "conda-meta/history").write_text("fixture\n")
+        self.add_command("conda")
+        self.env["VIRTUAL_ENV"] = "/ambient/venv"
+        return prefix
+
+    def test_conda_uses_explicit_prefix_without_uv_or_ambient_activation(self):
+        prefix = self.add_conda_environment()
+        (self.bin / "uv").unlink()
+        (self.main / "uv.lock").unlink()
+        data = self.payload(self.run_wrapper(
+            "--backend", "conda", "--conda-prefix", str(prefix),
+            "--devices", "0,2", "python", "-c", "print('ok')",
+        ))
+        self.assertEqual(data["tool"], "conda")
+        self.assertEqual(data["args"], [
+            "run", "--no-capture-output", "--prefix", str(prefix),
+            "python", "-c", "print('ok')",
+        ])
+        self.assertIsNone(data["env"]["VIRTUAL_ENV"])
+        self.assertIsNone(data["env"]["CONDA_PREFIX"])
+        self.assertIsNone(data["env"]["CONDA_DEFAULT_ENV"])
+        self.assertEqual(data["env"]["CUDA_VISIBLE_DEVICES"], "0,2")
+
+    def test_conda_worktree_uses_shared_prefix_and_its_own_source(self):
+        prefix = self.add_conda_environment()
+        worktree = self.add_worktree()
+        (worktree / "src").mkdir()
+        data = self.payload(self.run_wrapper(
+            "--backend", "conda", "--conda-prefix", str(prefix),
+            "--workdir", str(worktree), "pytest", "-q", "tests with spaces.py",
+        ))
+        self.assertEqual(data["cwd"], str(worktree))
+        self.assertEqual(data["args"], [
+            "run", "--no-capture-output", "--prefix", str(prefix),
+            "python", "-m", "pytest", "-q", "tests with spaces.py",
+        ])
+        self.assertEqual(data["env"]["PYTHONPATH"], f"{worktree / 'src'}:/site/custom-modules")
+        self.assertEqual(data["env"]["CUDA_VISIBLE_DEVICES"], "GPU-scheduler-assigned")
+
+    def test_conda_probe_torchrun_and_failure_status(self):
+        prefix = self.add_conda_environment()
+        options = ("--backend", "conda", "--conda-prefix", str(prefix))
+        probe = self.payload(self.run_wrapper(*options, "probe"))
+        self.assertEqual(probe["args"][4:], ["python", str(self.main / ".agents/bin/gpu_probe.py")])
+        distributed = self.payload(self.run_wrapper(*options, "torchrun", "--nproc-per-node=2", "train.py"))
+        self.assertEqual(distributed["args"][4:], [
+            "python", "-m", "torch.distributed.run", "--nproc-per-node=2", "train.py",
+        ])
+        self.env["GPU_TEST_EXIT"] = "9"
+        result = self.run_wrapper(*options, "python", "-V")
+        self.assertEqual(result.returncode, 9, result.stderr)
+
+    def test_conda_missing_selection_and_invalid_options_fail_before_execution(self):
+        prefix = self.add_conda_environment()
+        for args in (
+            ("--backend",), ("--backend", ""), ("--backend", "--workdir"),
+            ("--backend", "invalid", "python", "-V"),
+            ("--backend", "conda", "python", "-V"),
+            ("--backend", "conda", "--conda-prefix", "relative-env", "python", "-V"),
+            ("--conda-prefix", str(prefix), "python", "-V"),
+            ("--conda-prefix",), ("--conda-spec",),
+            ("--backend", "conda", "--conda-prefix", str(prefix), "--conda-spec", "../outside.yml", "python", "-V"),
+        ):
+            with self.subTest(args=args):
+                result = self.run_wrapper(*args)
+                self.assertEqual(result.returncode, 64, result.stderr)
+                self.assertEqual(result.stdout, "")
+
+    def test_conda_missing_runtime_or_invalid_environment_has_no_fallback(self):
+        prefix = self.add_conda_environment()
+        options = ("--backend", "conda", "--conda-prefix", str(prefix))
+        (self.bin / "conda").unlink()
+        result = self.run_wrapper(*options, "python", "-V")
+        self.assertEqual(result.returncode, 69, result.stderr)
+        self.assertEqual(result.stdout, "")
+        self.add_command("conda")
+        (prefix / "conda-meta/history").unlink()
+        result = self.run_wrapper(*options, "python", "-V")
+        self.assertEqual(result.returncode, 69, result.stderr)
+        self.assertEqual(result.stdout, "")
+
+    def test_conda_spec_agreement_is_checked_before_execution(self):
+        prefix = self.add_conda_environment()
+        (self.main / "environment.yml").write_text("dependencies:\n  - python\n")
+        self.git("add", "environment.yml", cwd=self.main)
+        self.git("commit", "-m", "environment declaration", cwd=self.main)
+        worktree = self.add_worktree()
+        options = ("--backend", "conda", "--conda-prefix", str(prefix),
+                   "--conda-spec", "environment.yml", "--workdir", str(worktree))
+        self.payload(self.run_wrapper(*options, "python", "-V"))
+        (worktree / "environment.yml").write_text("dependencies:\n  - python=3.12\n")
+        result = self.run_wrapper(*options, "python", "-V")
+        self.assertEqual(result.returncode, 78, result.stderr)
+        self.assertEqual(result.stdout, "")
+        (worktree / "environment.yml").unlink()
+        result = self.run_wrapper(*options, "python", "-V")
+        self.assertEqual(result.returncode, 78, result.stderr)
+
+    def test_conda_inventory_needs_no_environment_or_runtime(self):
+        (self.bin / "uv").unlink()
+        data = self.payload(self.run_wrapper("--backend", "conda", "nvidia-smi"))
+        self.assertEqual(data["tool"], "nvidia-smi")
+
+    def test_conda_preserves_the_repository_boundary(self):
+        prefix = self.add_conda_environment()
+        unrelated = self.root / "unrelated"
+        unrelated.mkdir()
+        self.git("init", "-b", "main", cwd=unrelated)
+        result = self.run_wrapper("--backend", "conda", "--conda-prefix", str(prefix),
+                                  "--workdir", str(unrelated), "python", "-V")
+        self.assertEqual(result.returncode, 77, result.stderr)
+
+
+@unittest.skipUnless(shutil.which("conda"), "conda is required for the integration test")
+class RealCondaTests(unittest.TestCase):
+    def test_linked_worktree_runs_in_the_explicit_conda_environment(self):
+        with tempfile.TemporaryDirectory(prefix="gpu-real-conda-") as directory:
+            root = Path(directory)
+            main = root / "main"
+            main.mkdir()
+            GPUExecTests.git("init", "-b", "main", cwd=main)
+            GPUExecTests.git("config", "user.email", "test@example.com", cwd=main)
+            GPUExecTests.git("config", "user.name", "GPU Test", cwd=main)
+            (main / "environment.yml").write_text("dependencies:\n  - python\n")
+            (main / "src").mkdir()
+            (main / "src/checkout_identity.py").write_text("VALUE = 'main'\n")
+            GPUExecTests.git("add", "environment.yml", "src", cwd=main)
+            GPUExecTests.git("commit", "-m", "fixture", cwd=main)
+            worktree = root / "linked worktree"
+            GPUExecTests.git("worktree", "add", "-b", "feature", str(worktree), cwd=main)
+            (worktree / "src/checkout_identity.py").write_text("VALUE = 'worktree'\n")
+            prefix = root / "conda environment"
+            (prefix / "conda-meta").mkdir(parents=True)
+            (prefix / "conda-meta/history").write_text("")
+            (prefix / "bin").mkdir()
+            (prefix / "bin/python").symlink_to(sys.executable)
+            subprocess.run([str(INSTALLER), "--repository", str(main)], check=True,
+                           capture_output=True, text=True, timeout=10)
+            env = dict(os.environ, CUDA_VISIBLE_DEVICES="GPU-test-allocation",
+                       VIRTUAL_ENV="/ambient/venv", CONDA_PREFIX="/ambient/conda")
+            code = (
+                "import json, os, checkout_identity; "
+                "print(json.dumps({'prefix': os.environ.get('CONDA_PREFIX'), "
+                "'venv': os.environ.get('VIRTUAL_ENV'), 'value': checkout_identity.VALUE, "
+                "'devices': os.environ.get('CUDA_VISIBLE_DEVICES')}))"
+            )
+            result = subprocess.run([
+                str(main / ".agents/bin/gpu-exec"), "--backend", "conda",
+                "--conda-prefix", str(prefix), "--conda-spec", "environment.yml",
+                "--workdir", str(worktree), "python", "-c", code,
+            ], cwd=root, env=env, capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            data = json.loads(result.stdout)
+            self.assertEqual(data["prefix"], str(prefix))
+            self.assertIsNone(data["venv"])
+            self.assertEqual(data["value"], "worktree")
+            self.assertEqual(data["devices"], "GPU-test-allocation")
+
 
 @unittest.skipUnless(shutil.which("uv"), "uv is required for the integration test")
 class RealUVTests(unittest.TestCase):

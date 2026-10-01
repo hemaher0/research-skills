@@ -10,7 +10,7 @@ import torch
 
 def main() -> None:
     if not torch.cuda.is_available():
-        raise RuntimeError("CUDA is unavailable in the repository's shared uv environment")
+        raise RuntimeError("CUDA is unavailable in the selected project environment")
     if torch.cuda.device_count() < 1:
         raise RuntimeError("no CUDA device is visible")
 
@@ -33,6 +33,8 @@ def main() -> None:
         "project_root": str(Path.cwd()),
         "python": sys.executable,
         "virtual_env": os.environ.get("VIRTUAL_ENV"),
+        "conda_prefix": os.environ.get("CONDA_PREFIX"),
+        "python_prefix": sys.prefix,
         "torch": torch.__version__,
         "torch_cuda_build": torch.version.cuda,
         "cuda_available": torch.cuda.is_available(),

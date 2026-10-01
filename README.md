@@ -22,7 +22,7 @@ change, and useful findings can remain incomplete.
 | [pilot](plugins/research-skills/skills/pilot/SKILL.md) | Obtain new evidence under representative conditions within an authorized execution scope. |
 | [report](plugins/research-skills/skills/report/SKILL.md) | Present current findings and open questions faithfully in the requested format. |
 | [notion-mirror](plugins/research-skills/skills/notion-mirror/SKILL.md) | Mirror a completed local experiment document to its configured Notion destination when requested. |
-| [run-gpu](plugins/research-skills/skills/run-gpu/SKILL.md) | Run CUDA work through a stable repository approval prefix and the main checkout's shared uv environment. |
+| [run-gpu](plugins/research-skills/skills/run-gpu/SKILL.md) | Run CUDA work through a stable repository approval prefix and a shared uv or Conda environment. |
 
 ## Install for a project
 
@@ -151,7 +151,7 @@ Use $pilot to execute the agreed pilot and report its results in this conversati
 Use $report to present the current findings and open questions in this conversation.
 Use $report to present the reviewed analysis in the existing experiment record.
 Use $notion-mirror to mirror the completed local experiment document to its configured Notion destination.
-Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this repository's shared uv environment.
+Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this repository's selected shared uv or Conda environment.
 ```
 
 ### Environment and workflow requirements
@@ -190,18 +190,23 @@ Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this re
   Notion access and a selected destination configuration are required;
   `AGENTS.local.md` is only an optional private/host override. Missing settings or access do not change the
   local experiment's completed status.
-- **run-gpu:** Requires Bash and Git. Inventory uses `nvidia-smi` without `uv`
-  or a Python environment. Python execution uses `uv` and the main checkout's
-  `pyproject.toml`, `uv.lock`, and `.venv`. CUDA execution requires an NVIDIA GPU,
-  a driver, and CUDA-enabled PyTorch in the shared environment. Conda environments
-  are not used.
+- **run-gpu:** Requires Bash and Git. Inventory uses `nvidia-smi` without a
+  Python environment. The default uv backend uses the main checkout's
+  `pyproject.toml`, `uv.lock`, and `.venv`. The Conda backend uses `conda` and an
+  explicit existing environment prefix with Python. CUDA execution requires an
+  NVIDIA GPU, a driver, and CUDA-enabled PyTorch in the selected environment.
 - Run the installed skill's `install-gpu-exec` once to deploy the stable
   entrypoint at the target repository's `.agents/bin/gpu-exec`. Reinstalling
   after a plugin update preserves this path so every GPU command begins with
   the same approval prefix.
-- The main checkout and linked worktrees share the main checkout's single
-  `.venv`. The wrapper uses `uv run --active --no-sync` and prioritizes the
-  selected worktree's `src`. It stops if the two checkouts' `uv.lock` files differ.
+- The main checkout and linked worktrees share the selected project environment
+  and prioritize the selected worktree's `src`. uv uses
+  `uv run --active --no-sync` and requires matching `uv.lock` files. Conda uses
+  `--backend conda --conda-prefix <absolute-environment-path>` and
+  `conda run --no-capture-output --prefix`; `--conda-spec <repository-relative-file>`
+  checks main/worktree declaration agreement when selected. Verify installed
+  packages through the project's setup procedure. The wrapper does not install
+  dependencies or switch backends after a failure.
 - Without a GPU selection, preserve the existing `CUDA_VISIBLE_DEVICES`. Use
   `--devices` only for explicit device selection. The caller's options determine
   the number of `torchrun` processes. Respect scheduler and container allocations.
@@ -209,10 +214,9 @@ Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this re
   server. Follow existing SSH and scheduler procedures. Plugin installation
   does not grant GPU access.
 
-`run-gpu` resolves checkout and wrapper paths from Git, verifies the shared uv
+`run-gpu` resolves checkout and wrapper paths from Git, verifies the selected shared
 environment for Python execution, and checks the current allocation. A local host profile supplies
-only necessary constraints or connection context. It does not support other
-Python environment types. Verify allocated devices at execution time.
+only necessary constraints or connection context. Verify allocated devices at execution time.
 Notion mirroring requires a destination URL and the identifiers and properties
 appropriate for that destination type.
 
@@ -318,7 +322,9 @@ python3 -m unittest discover -s tests -v
 ```
 
 Tests verify stable entrypoint installation, repository and worktree boundaries,
-the shared `.venv`, command forwarding, and failure handling without starting
-GPU workloads. When `uv` is available, they also check real
+the shared uv/Conda environment selection, declaration agreement, command
+forwarding, and failure handling without starting GPU workloads. When `conda`
+is available, they check real activation and execution with a temporary prefix
+and linked worktree. When `uv` is available, they also check real
 `uv run --active --no-sync` execution in a temporary project and linked worktree
 that need no external dependencies.
