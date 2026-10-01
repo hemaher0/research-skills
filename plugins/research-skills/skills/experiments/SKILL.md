@@ -136,7 +136,9 @@ a documentation update from the experiment alone.
 Resolve shared experiment-document locations from effective project instructions
 or their existing configuration source. Use a selected local `AGENTS.local.md`
 path override when it specifies a path within project policy; otherwise use
-the shared setting. No local file is needed for a project setting or default.
+the shared setting. Local path override fields remain optional; installation
+still creates or updates the file, including an explicit no-override declaration
+when applicable, as described in the source README.
 Empty/placeholder or `Use Repository Default` overrides leave that setting
 in force. Resolve a relative document path from the main checkout, never from an isolated code
 worktree; use an absolute path as written. Use the same precedence for an

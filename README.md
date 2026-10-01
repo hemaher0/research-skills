@@ -84,38 +84,60 @@ See the [official repository marketplace and project configuration guide](https:
 1. Projects that use work records choose one canonical work-item repository
    and record format. Without a document router, continue using project
    instructions, the local `.docs-schema` when present, and ordinary file tools.
-2. Read existing project instructions and the [project template](plugins/research-skills/templates/AGENTS.md).
+2. Create or update root `AGENTS.local.md` during every installation, even
+   without a separate request for the file. Read existing project instructions
+   and the [project template](plugins/research-skills/templates/AGENTS.md).
    Keep shared experiment/artifact conventions in project instructions or their
    existing source. Native manifests, setup guides and scheduler configuration
    own reproducible environments; Git/runtime inspection supplies actual paths,
    wrapper and allocation facts. Run-specific state belongs to its record.
    Keep mirror destinations and declared property mappings in the project's
    selected integration configuration, using a private source where required.
-   The [local template](plugins/research-skills/templates/AGENTS.local.md) is only
-   for selected local paths, host constraints or a private configuration pointer.
-   Omit fields already resolved elsewhere and unused/default settings; no local
-   file is required when project/native settings suffice. Preserve existing
-   choices and other packages' sections. The templates are
+   Read the [local configuration template](plugins/research-skills/templates/AGENTS.local.md)
+   and merge its research section into `AGENTS.local.md`. Fill only selected
+   local paths, host constraints or a private configuration pointer. If no
+   local overrides are needed, write `Local overrides: None. Use effective project settings and skill defaults.`
+   in that section. Remove unused template fields and avoid duplicating settings
+   already resolved elsewhere. Preserve existing choices and other packages'
+   sections. The templates are
    available in `.agents/vendor/research-skills/plugins/research-skills/templates/`.
    Inspect repository/environment facts and reuse established choices. Confirm
    consequential unknowns such as storage boundaries, required execution
    profiles, resource allocations, or a requested mirror destination with the project owner before
    dependent setup. A plugin installation does not authorize a run, create a
    research record, or initialize work history.
-   When a local file is used, ensure effective root instructions (`AGENTS.md`, or `AGENTS.override.md`
-   when it takes precedence) include an equivalent of:
+   An unresolved choice is pending, not evidence that a setting is unnecessary.
+   Connect the local file to root instructions. If `AGENTS.md` exists, preserve
+   it and add the following instruction unless it already reads or resolves to
+   the local file:
 
    ```markdown
    Read and follow root AGENTS.local.md when it exists.
    ```
+
+   If `AGENTS.md` is absent, the recommended connection is a relative symbolic
+   link created from the project root, after writing `AGENTS.local.md`:
+
+   ```bash
+   ln -s AGENTS.local.md AGENTS.md
+   ```
+
+   Preserve existing files and links; do not replace them or add a self-reference
+   to a linked local file. If `AGENTS.override.md` takes precedence, ensure it
+   also reads the local file. Verify the effective connection and link targets.
+
 3. The work-item repository and experiment document root may differ. Resolve
    relative experiment document paths from the main checkout. If experiment
    code needs a branch or worktree, keep document records in their configured
    location under the project's Git policy and connect the records with links.
-4. Verify marketplace paths/name, effective configuration sources, and applicable
-   configured paths in a new session. Report skill availability, authored
+4. Before declaring installation complete, verify that `AGENTS.local.md`
+   contains the resolved research settings or the explicit no-override
+   declaration, has no unused placeholders, and is read through effective root
+   instructions. Verify marketplace paths/name, configuration sources, and
+   applicable configured paths in a new session. Report skill availability, authored
    settings, intentionally disabled features, and decisions still needed for
-   dependent work. Verify a GPU wrapper only when its setup was selected;
+   dependent work. Required unresolved choices remain pending; plugin availability
+   alone does not complete configuration. Verify a GPU wrapper only when its setup was selected;
    installation alone does not run a GPU workload or publish a Notion page.
 
 Reasoning skills supply scientific judgment; `experiments` supplies record
@@ -187,9 +209,9 @@ Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this re
   experiment records are not prerequisites.
 - **notion-mirror:** Use only when mirroring a completed local experiment
   document is requested. It is not a prerequisite for other research skills.
-  Notion access and a selected destination configuration are required;
-  `AGENTS.local.md` is only an optional private/host override. Missing settings or access do not change the
-  local experiment's completed status.
+  Notion access and a selected destination configuration are required.
+  Private/host overrides in the installation's `AGENTS.local.md` are optional.
+  Missing settings or access do not change the local experiment's completed status.
 - **run-gpu:** Requires Bash and Git. Inventory uses `nvidia-smi` without a
   Python environment. The default uv backend uses the main checkout's
   `pyproject.toml`, `uv.lock`, and `.venv`. The Conda backend uses `conda` and an

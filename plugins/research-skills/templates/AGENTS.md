@@ -42,6 +42,6 @@ mirror skill specifies the required fields, verifies the actual destination,
 and owns the requested write; credentials stay with the connector. An individual
 experiment's mirror URL and result stay in that experiment record.
 
-Read root `AGENTS.local.md` when selected host/path or private configuration
-overrides are present. Overrides must remain within project policy and actual
-permissions; they do not authorize execution or external publication.
+Read and follow root `AGENTS.local.md` when it exists. Overrides remain within
+project policy and actual permissions; they do not authorize execution or
+external publication.

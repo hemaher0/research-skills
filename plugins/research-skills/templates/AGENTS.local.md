@@ -1,13 +1,19 @@
 # Local Research Configuration
 
-<!-- Optional local paths and host/private integration profiles. Shared
-locations, reproducible environment configuration and mirror contracts belong
-in effective project instructions or existing configuration sources.
+<!-- Create or merge this package section into root AGENTS.local.md during
+installation. Keep the status even when no local overrides are needed; fill
+selected fields and remove unused fields/headings. Preserve existing values
+and other packages' sections. Shared locations, reproducible environment
+configuration and mirror contracts stay in their existing configuration sources.
 Resolve checkout, environment, wrapper, dependency and allocation facts from
 Git, runtime tools and the scheduler. Keep run-specific state in its record.
-Omit fields already resolved elsewhere. Fill selected overrides and preserve
-other sections. Ensure effective instructions read this file when used.
+Do not duplicate settings resolved elsewhere. Connect the file through existing
+AGENTS.md, or a recommended AGENTS.md symlink when absent, following the source README.
 Never put credentials or assertions of newly granted permissions here. -->
+
+## Research Configuration Status
+
+- Local overrides: `<None. Use effective project settings and skill defaults. / Configured; see below. / Pending; identify the local decision.>`
 
 ## Local Research Locations
 

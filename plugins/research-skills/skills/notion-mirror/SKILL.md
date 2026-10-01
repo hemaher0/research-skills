@@ -33,7 +33,9 @@ mirror.
 
 Resolve the Notion mirror configuration from effective project instructions
 and their designated integration source. Read a selected private configuration
-override in `AGENTS.local.md` when present; a local file is not required.
+override in `AGENTS.local.md` when present. Installation creates or updates
+that file even when no private override is needed; this operation uses the
+existing destination configuration rather than initializing installation settings.
 Unset/placeholder or `Not Configured` override values leave an established
 project configuration in force; do not treat them as a different destination.
 Use existing configured destination fields without copying or silently moving
