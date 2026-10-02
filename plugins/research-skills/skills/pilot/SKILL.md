@@ -44,13 +44,18 @@ record.
 
 ## Keep actions separate
 
-Use existing runnable code first. A pilot request by itself does not authorize
-source, notebook, test, script, dependency, or runtime configuration changes.
-If the required capability is absent, identify it and stop the affected run.
-If implementation is also requested, complete that separately with the smallest
-working change that meets the requested condition, verify it, and then run the
-pilot within the authorized execution scope. Improve that implementation only
-for an observed defect or an agreed requirement.
+Use existing runnable capabilities when they satisfy the protocol. Necessary
+bounded implementation or preparation can proceed within the authorized goal,
+representative conditions and resource budget through the responsible
+development/environment workflow. Verify that preparation before relying on
+its results and record material effects on the protocol. Existing authorization
+covers necessary prerequisites within that scope.
+
+Resolve a missing essential input or authority before dependent execution.
+A change to the agreed scientific question, comparisons, interpretation-critical
+conditions or resource scope needs the appropriate decision before that run.
+Do not substitute a different phenomenon or an arbitrary toy/shortened condition
+to make an unavailable capability appear covered.
 
 Do not create an experiment record, report file, branch, worktree, or Notion page
 solely because this skill is active. Use an existing record when the user asks to

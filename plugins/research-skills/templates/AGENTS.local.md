@@ -1,8 +1,8 @@
 # Local Research Configuration
 
 <!-- Create or merge this package section into root AGENTS.local.md during
-installation. Keep the status even when no local overrides are needed; fill
-selected fields and remove unused fields/headings. Preserve existing values
+installation. Mark configuration complete only after required values or their
+existing authoritative sources are resolved. Remove unused fields/headings. Preserve existing values
 and other packages' sections. Shared locations, reproducible environment
 configuration and mirror contracts stay in their existing configuration sources.
 Resolve checkout, environment, wrapper, dependency and allocation facts from
@@ -13,7 +13,8 @@ Never put credentials or assertions of newly granted permissions here. -->
 
 ## Research Configuration Status
 
-- Local overrides: `<None. Use effective project settings and skill defaults. / Configured; see below. / Pending; identify the local decision.>`
+- Configuration status: `<Complete / Incomplete: identify required unresolved values>`
+- Existing research settings source, when applicable: `<actual path to the authoritative research settings>`
 
 ## Local Research Locations
 
@@ -25,6 +26,17 @@ Never put credentials or assertions of newly granted permissions here. -->
 - Host or scheduler profile: `<existing host/profile reference>`
 - Allocated or permitted devices, if a fixed host constraint applies: `<device IDs/UUIDs, or scheduler-managed>`
 
-## Private Notion Configuration
+## Private Notion Configuration (when mirroring is used)
 
-- Notion mirror configuration override: `<path to an existing private destination configuration, or Not Configured>`
+<!-- Keep either the verified existing configuration source or the required
+inline values. Remove fields for the other destination type. When mirroring
+is unused, omit this section; declare that feature choice in project settings. -->
+
+- Destination configuration source: `<actual existing configuration path, or this file for inline values>`
+- Destination URL: `<actual Notion URL>`
+- Destination type: `<parent page / data source>`
+- Child-title pattern, for a parent page: `<actual pattern containing the exact Experiment ID>`
+- Data source identifier, for a data source: `<actual identifier>`
+- Title property mapping, for a data source: `<actual property name>`
+- Experiment ID property mapping, for a data source: `<actual property name>`
+- Status property and Completed value, for a data source: `<actual property name and value>`

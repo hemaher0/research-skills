@@ -50,14 +50,22 @@ updated_at: "<ISO 8601 timestamp with UTC offset>"
 
 ### Identity and isolation
 
-- Repository: `<repository-relative or configured identifier>`
+- Primary execution repository: `<actual repository identifier for this execution>`
 - Base branch: `<configured base branch or None>`
 - Start SHA: `<full SHA>`
-- Experiment branch: `None | experiment/<Experiment-ID>`
+- Experiment branch: `None | <actual branch selected by the project's Git workflow>`
 - Worktree: `None | <absolute path recorded for local reproducibility>`
 - Current SHA: `<full SHA>`
 - Working tree: `clean | dirty`
 - Spec/change record: `N/A | <identifier and link>`
+
+For additional code inputs or executions, retain each repository's role and
+actual revision/snapshot, and the environment used when executing it. Omit
+this table when the primary repository is the only code input.
+
+| Repository | Role in the experiment | Revision or snapshot | Execution environment, if used |
+| --- | --- | --- | --- |
+| <actual repository> | <reference, baseline, implementation or other contribution> | <actual identity> | <environment reference or not executed> |
 
 ### Lineage and setup inheritance
 

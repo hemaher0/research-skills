@@ -152,6 +152,11 @@ placement, writing, editing, and review to an available document router;
 otherwise use project conventions and ordinary file tools. Experiment records
 and work records do not replace each other.
 
+An experiment may use several repositories; preserve each contribution's code
+identity and the execution environment for each run. Git naming, isolation,
+remote operations and integration follow the project's Git workflow rather
+than a separate experiment-specific procedure.
+
 Unless project configuration selects another location, new experiment records
 use this path relative to the main checkout:
 
@@ -251,6 +256,11 @@ appropriate for that destination type.
 Reasoning, pilot execution, reporting, and persistent record management are
 independent capabilities. Skill selection alone does not create
 runs, code changes, local documents, worktrees, or Notion pages.
+
+A requested pilot can include necessary bounded preparation within the agreed
+question, representative conditions and execution budget. Use the responsible
+development/environment workflow and verify that preparation. Resolve a
+material change of scientific conditions or authority before affected execution.
 
 Work-item updates follow the project's history capture policy, including GPU
 work and Notion mirroring. A configured repository alone does not enable

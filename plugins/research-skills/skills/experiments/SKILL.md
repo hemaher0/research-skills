@@ -13,8 +13,8 @@ unless the user asks to manage the experiment over time or requests a durable
 experiment document.
 
 Separately, follow the project's work-history capture policy. When it calls
-for a work-item update, preserve the covered requests and discussions, protocol
-decisions, experiment links, evidence, code SHA, and next action there. A
+for a work-item update, preserve material goal and protocol decisions, progress,
+experiment links, evidence, code identity and continuation state there. A
 configured repository alone does not enable capture or require every turn;
 selective or disabled capture leaves this requested experiment record and its
 required provenance unchanged. Check whether a compatible
@@ -39,18 +39,19 @@ a record. Use their document and artifact locations, terminology, execution
 resources, and optional spec/change system. Do not infer a repository, server,
 or worktree root from another project.
 
-One experiment has one code repository. Its document may live in the configured
-project or separate document repository; that location does not authorize
-reading or executing code from a second code repository. Keep the work item and
-experiment record linked without treating them as the same document.
+An experiment can draw on several code repositories. Identify each repository's
+role and relevant revision or snapshot, and select the execution repository and
+environment for each run. The configured document repository owns the record's
+location, not code execution authority. Repository access and each run remain
+within the research task and resource scope. Keep the work item and experiment
+record linked without treating them as the same document.
 
-This skill records the research protocol and evidence without independently
-choosing the research direction or implementing it. Do not create, modify,
-or delete source code, notebooks, tests, experiment scripts, dependencies, or
-runtime configuration as a side effect of managing it. Use existing entrypoints
-for authorized execution. If a required capability is missing, record the
-prerequisite and stop the affected execution. Handle an explicitly requested
-implementation as a separate task.
+This skill owns protocol and evidence records. A record-management request
+alone does not authorize changing implementation or launching a run. When the
+authorized research task also requires execution or implementation, use the
+responsible execution/development workflow within that same authority and link
+its artifacts and evidence here. Resolve an essential missing capability before
+dependent execution without treating record maintenance as a new research goal.
 
 Creating a record does not authorize training, evaluation, publication, or a
 separate branch or worktree. Execute only when the request includes
@@ -136,9 +137,8 @@ a documentation update from the experiment alone.
 Resolve shared experiment-document locations from effective project instructions
 or their existing configuration source. Use a selected local `AGENTS.local.md`
 path override when it specifies a path within project policy; otherwise use
-the shared setting. Local path override fields remain optional; installation
-still creates or updates the file, including an explicit no-override declaration
-when applicable, as described in the source README.
+the shared setting. Installation configuration follows the source README;
+record management consumes the effective locations.
 Empty/placeholder or `Use Repository Default` overrides leave that setting
 in force. Resolve a relative document path from the main checkout, never from an isolated code
 worktree; use an absolute path as written. Use the same precedence for an
@@ -175,12 +175,9 @@ in the document metadata:
 exp-YYYYMMDD-HHMMSS-<topic>
 ```
 
-When a branch or worktree is needed, name it with that identifier:
-
-```text
-branch:   experiment/<Experiment-ID>
-worktree: <configured-worktree-root>/<Experiment-ID>
-```
+When isolation is needed, follow the project's Git naming and workspace
+procedure. Link the actual branch/worktree to this identifier; a scientific
+record identity does not prescribe a Git branch or require a new checkout.
 
 Use these document states:
 
@@ -212,35 +209,14 @@ with UTC offset, and dirty state. Record `None` for a branch or worktree created
 specifically for this experiment when there is none. If the repository defines a
 spec/change system, follow its actual policy; otherwise record `N/A`.
 
-Create a branch or worktree only when the user or repository requires one, or
-when conflicting changes, parallel work, or output contamination make isolation
-necessary. Before mutating Git, resolve the main checkout, base/start SHA,
-worktree root, target branch, and target path. Verify the branch and path do not
-already exist and that the worktree root is ignored. Do not stash, commit, reset,
-move, or copy unrelated changes. When isolation is needed, use the experiment ID
-to name the branch and worktree, then record their actual paths and SHA.
-
-For a root experiment, resolve the configured base branch to the start SHA.
-For a child with a branch parent, use that parent's committed tip; if its
-worktree is dirty, resolve that state before deriving the child. Never copy
-uncommitted parent changes. If the worktree root is not ignored, add its
-repository-relative path to the main checkout's local `.git/info/exclude`
-instead of editing tracked `.gitignore`. Create the optional worktree with no
-upstream:
-
-```bash
-git -C <main-checkout> -c branch.autoSetupMerge=false worktree add \
-  -b experiment/<Experiment-ID> \
-  <configured-worktree-root>/<Experiment-ID> \
-  <start-SHA>
-```
-
-Do not add or change remotes, fetch, pull, push, set an upstream, open a PR,
-merge, or delete the branch/worktree without that separate request. If creation
-fails or is interrupted, re-read the document, branch, path, and registered
-worktree state before retrying. Clean up only resources certainly created by the
-current attempt and only while still unmodified; otherwise preserve and report
-the partial state.
+Use the project's Git workflow to decide whether to reuse or allocate a
+workspace, choose its base and name, reconcile interrupted operations, and
+perform authorized remote or integration actions. This record does not add a
+separate Git permission policy. Record the actual repository, checkout, base
+and result snapshots and any material uncommitted inputs. When a child protocol
+requires a parent's code, identify the parent's actual required snapshot and
+have the Git workflow materialize it; scientific parentage alone does not
+select a branch tip. Preserve pending work and evidence through that workflow.
 
 ### Continue an experiment
 

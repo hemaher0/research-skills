@@ -33,11 +33,13 @@ mirror.
 
 Resolve the Notion mirror configuration from effective project instructions
 and their designated integration source. Read a selected private configuration
-override in `AGENTS.local.md` when present. Installation creates or updates
-that file even when no private override is needed; this operation uses the
-existing destination configuration rather than initializing installation settings.
-Unset/placeholder or `Not Configured` override values leave an established
-project configuration in force; do not treat them as a different destination.
+override in `AGENTS.local.md` when present. Use the established project
+configuration unless a completed authorized override selects another source.
+A placeholder is not a selected destination. Required destination values must
+resolve from actual inline fields or a verified existing configuration source.
+An unused integration is a project feature choice; an unknown destination is
+incomplete configuration, not a disabled feature. Installation follows the
+source README; mirroring consumes settings rather than initializing them.
 Use existing configured destination fields without copying or silently moving
 them during installation. The selected configuration declares the exact
 destination URL/type and applicable title/property mappings; credentials stay

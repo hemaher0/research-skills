@@ -30,8 +30,8 @@ The dependency declarations, scheduler and host approval controls remain
 authoritative; a local snapshot cannot grant devices or execution permission.
 Host constraints can narrow the current allocation, never expand it.
 No environment override is needed when those sources already resolve it.
-Installation creates or updates `AGENTS.local.md` regardless; ordinary GPU work
-uses existing configuration rather than initializing installation settings.
+GPU work consumes these settings; installation configuration follows the
+source README.
 Choose the backend from the project's environment procedure. uv is the default;
 Conda requires `--backend conda --conda-prefix <absolute-environment-path>`.
 If the project identifies an environment by name, resolve its actual prefix

@@ -12,7 +12,7 @@
   "interface": {
     "displayName": "Research Skills",
     "shortDescription": "Evidence-led AI/ML inquiry and research operations",
-    "longDescription": "Six reasoning skills for investigating precedents, decomposing problems, interpreting results, recombining research cues, developing provisional hypotheses, and advancing an inquiry through evidence-led iterations. Independent skills manage persistent experiment records, representative pilots, research reports, requested Notion mirrors, and repository-scoped shared-uv GPU execution.",
+    "longDescription": "Six reasoning skills for investigating precedents, decomposing problems, interpreting results, recombining research cues, developing provisional hypotheses, and advancing an inquiry through evidence-led iterations. Independent skills manage persistent experiment records, representative pilots, research reports, requested Notion mirrors, and repository-scoped GPU execution in shared uv or Conda environments.",
     "developerName": "hemaher0",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
@@ -21,7 +21,7 @@
       "Develop a provisional hypothesis from the available evidence and expose its assumptions.",
       "Analyze existing research results and state what remains unexplained.",
       "Manage a requested persistent experiment record or plan representative new-evidence execution.",
-      "Inspect this repository's shared uv environment and the GPUs allocated on this server."
+      "Inspect this repository's selected shared uv or Conda environment and the GPUs allocated on this server."
     ]
   }
 }
