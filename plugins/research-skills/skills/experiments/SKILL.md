@@ -89,6 +89,12 @@ a documentation update from the experiment alone.
 
 ## Scientific contract
 
+- Preserve
+  [evidence-based-research's consequential-choice basis](../evidence-based-research/SKILL.md#ground-consequential-choices)
+  in the protocol and relevant existing fields: purpose, applicable evidence,
+  unresolved premises, consequences, and observations needed before dependent
+  work. Keep requested constraints and selected methods distinct. Record status
+  and execution history do not change a choice's authority or evidential status.
 - Record the current question, purpose, relevant cues, and unresolved
   uncertainty. A partial hypothesis or an exploratory question is sufficient;
   an expected numerical result or binary decision gate is not compulsory.

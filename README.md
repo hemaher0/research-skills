@@ -211,6 +211,12 @@ Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this re
   a new scope decision only when
   that boundary needs to change. Code implementation uses the available
   development workflow; research does not require an artificial failing test.
+  [Consequential choices](plugins/research-skills/skills/evidence-based-research/SKILL.md#ground-consequential-choices)
+  connect purpose, applicable evidence, unresolved premises, and observations
+  needed before dependent work. Evidence effort follows impact, uncertainty,
+  and reversibility; defaults, protocol records, and successful execution do not
+  establish scientific suitability. This applies without a managed experiment
+  record and preserves authorized exploration.
 - **experiments:** Update the same Markdown record from planning through final
   analysis only when persistent record management is requested. Create branches
   or worktrees only for a concrete isolation need. Do not change source, tests,

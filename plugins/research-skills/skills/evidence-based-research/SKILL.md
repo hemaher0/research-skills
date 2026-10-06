@@ -32,6 +32,33 @@ Use other reasoning skills at the point they help:
 No fixed order or complete hypothesis is required before the first observation.
 Motivation, method, and experimental evidence can each prompt further inquiry.
 
+## Ground consequential choices
+
+For a choice that materially affects what an attempt can establish or the cost
+of dependent work, connect the scientific purpose to evidence applicable to the
+actual conditions. Identify unresolved premises, the consequence of being
+wrong, and how and when to check them. Scale the evidence effort to impact,
+uncertainty, and reversibility. Primary sources, applicable prior validation,
+direct observations, and supported tradeoffs can justify a choice; an
+unsupported method remains a proposal to investigate. A default or inherited
+choice needs the same applicability judgment as a newly selected one.
+
+Keep user requirements, selected methods, observed facts, and assumptions
+distinct through plans, runs, and records. Recording a choice, freezing a
+protocol, or executing it does not establish its adequacy or make it a user
+requirement. Execution authorization and evidence supporting scientific
+suitability answer different questions.
+
+Give a consequential unresolved premise a covering observation and needed-by
+point before later work relies on its truth. Authorized exploratory attempts
+may obtain that evidence and can remain inconclusive; every inquiry need not
+start with a settled design, literature search, pilot, or exhaustive comparison.
+Preserve the unresolved state when an observation cannot answer the question.
+Use the available development workflow for implementation correctness and this
+workflow for scientific applicability. Successful execution or improvement in
+one measurement supports only the claims it actually checks. Revisit choices when
+observations undermine their basis, before dependent execution or interpretation.
+
 ## Connect attempts to feedback
 
 Before an attempt, state its purpose, the conditions or comparison that matter,

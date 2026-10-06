@@ -24,6 +24,10 @@ record.
 
 ## Scope before execution
 
+- Apply
+  [consequential-choice checks](../evidence-based-research/SKILL.md#ground-consequential-choices)
+  to the selected conditions. State which unresolved premises this attempt
+  examines and what evidence later work would need before relying on them.
 - State the question, the reason for this attempt, representative conditions,
   and what will be observed. Include the working hypothesis and an expectation
   when justified; exploratory observations can precede a clear hypothesis.
@@ -76,6 +80,10 @@ Check the protocol, existing implementation, environment, inputs, controls, and
 measurements before treating a raw failure as scientific rejection. Record run
 validity separately from the scientific interpretation. Use
 [interpretation](../interpretation/SKILL.md) to analyze valid observations.
+Assess whether the observations answer the pilot's question. An execution check
+or initial change does not establish an unexamined premise. Preserve that gap
+when planning follow-up work, including when execution is already authorized;
+resolve it before dependent work treats it as established.
 
 When a pilot has a predeclared decision gate, record its outcome under the
 selected conditions using the project's classification or these labels:
