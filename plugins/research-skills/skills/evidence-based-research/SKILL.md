@@ -59,6 +59,48 @@ workflow for scientific applicability. Successful execution or improvement in
 one measurement supports only the claims it actually checks. Revisit choices when
 observations undermine their basis, before dependent execution or interpretation.
 
+## Check implementation efficiency before costly execution
+
+Before costly training, evaluation, data preparation, or repeated analysis,
+inspect the implementation that will actually execute. Scale the check to
+expected duration, memory demand, repeated work, and the authorized resource
+budget. Reassess when expanding execution or changing relevant conditions.
+
+Reuse applicable timings and profiles when the implementation and relevant
+execution conditions are unchanged. Inspect the main computation and data paths
+for avoidable work, such as repeated calculations or loading, unnecessary data
+movement or synchronization, and serialized independent operations. When the
+bottleneck or its impact is uncertain, obtain bounded timings or profiles under
+conditions that represent the intended workload. Account for warmup and
+asynchronous execution when measuring elapsed time. Keep inspection, profiling,
+and correction effort proportionate to the expected execution cost and within
+the authorized implementation and compute scope.
+
+Correct demonstrated inefficiencies before committing substantial compute.
+Choose bounded changes supported by the inspected code or measurements; do not
+turn this check into open-ended tuning. Preserve the scientific procedure and
+required conditions. Changes to objectives, data, precision, batch size, or
+evaluation procedure need the appropriate research decision before treating
+them as implementation improvements.
+
+Inspect the governing code and repository checks, make the smallest supported
+correction, and verify it before relying on changed code:
+
+- Compare affected outputs and numerical results with the baseline using the
+  task's accepted tolerances. For training-path changes, cover the affected
+  gradients or update behavior as well; run relevant repository checks.
+- Verify the claimed time or memory improvement under matched relevant workload
+  and execution conditions, including data shapes, procedure, precision,
+  hardware, and distributed topology. Include any material tradeoff.
+- Renew affected correctness and performance evidence when implementation or
+  relevant execution conditions change; reuse evidence that remains applicable.
+
+When no material inefficiency is found, proceed within the authorized execution
+scope without manufacturing an optimization. Keep observations, changes,
+verification limits, and the execution decision in the existing task context
+or required record. Performance checks are software evidence; they do not
+replace representative scientific observations or establish the hypothesis.
+
 ## Connect attempts to feedback
 
 Before an attempt, state its purpose, the conditions or comparison that matter,

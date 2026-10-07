@@ -48,6 +48,11 @@ record.
 
 ## Keep actions separate
 
+Before a costly pilot, apply the
+[implementation efficiency checks](../evidence-based-research/SKILL.md#check-implementation-efficiency-before-costly-execution).
+Preserve the representative conditions; bounded performance checks do not
+substitute for the pilot's scientific evidence.
+
 Use existing runnable capabilities when they satisfy the protocol. Necessary
 bounded implementation or preparation can proceed within the authorized goal,
 representative conditions and resource budget through the responsible
