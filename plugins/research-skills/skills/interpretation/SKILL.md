@@ -9,6 +9,16 @@ Determine what the available results mean under the conditions actually
 observed. A useful outcome can be a narrower conclusion, a surprising pattern,
 or a clearly unresolved question.
 
+## Optional companions
+
+Before following a link to another skill, check the current host's available
+skills list and its applicable scope. Read/invoke its actual listed installed
+path and name; links here identify the companion, not a source to load instead.
+A source or cache file alone does not make that skill available. Use listed companions only when useful; otherwise
+perform this skill's method below with project procedures and ordinary tools.
+Do not read an unavailable skill or its templates, install it automatically,
+route back in a loop, or weaken the required outcome because it is absent.
+
 ## Establish what the evidence represents
 
 Read the primary artifacts and available run or export evidence. Check the
@@ -65,9 +75,11 @@ and the scientific claim the result actually supports.
 
 Return the useful patterns, scoped conclusion, conflicting evidence, and
 remaining questions. Suggest the observation that could resolve a material gap
-without automatically launching it. Use [report](../report/SKILL.md) for a
-requested research presentation and [reinterpretation](../reinterpretation/SKILL.md)
-when multiple cues suggest a different connection or question. Existing-result
+without automatically launching it. Use [report](../report/SKILL.md) when available for a
+requested presentation, and [reinterpretation](../reinterpretation/SKILL.md)
+when available for a different connection or question. Without them, present
+the scoped conclusion and evidence in the requested format or compare the
+candidate connection directly, retaining conditions and unresolved alternatives. Existing-result
 analysis does not require a new run, repository script, or experiment record.
 
 ## Research basis

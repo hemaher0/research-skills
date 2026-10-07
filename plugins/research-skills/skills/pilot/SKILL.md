@@ -22,12 +22,23 @@ project instructions, the local `.docs-schema` when present, and ordinary file
 tools. This work-item trace is separate from an optional managed experiment
 record.
 
+## Optional companions
+
+Before following a link to another skill, check the current host's available
+skills list and its applicable scope. Read/invoke its actual listed installed
+path and name; links here identify the companion, not a source to load instead.
+A source or cache file alone does not make that skill available. Use listed companions only when useful; otherwise
+perform this skill's method below with project procedures and ordinary tools.
+Do not read an unavailable skill or its templates, install it automatically,
+route back in a loop, or weaken the required outcome because it is absent.
+
 ## Scope before execution
 
-- Apply
-  [consequential-choice checks](../evidence-based-research/SKILL.md#ground-consequential-choices)
-  to the selected conditions. State which unresolved premises this attempt
-  examines and what evidence later work would need before relying on them.
+- Connect each consequential condition to the scientific purpose and
+  applicable evidence; identify unresolved premises, consequences and the
+  observations needed before dependent work. State which premises this attempt
+  examines. An available [evidence-based-research](../evidence-based-research/SKILL.md#ground-consequential-choices)
+  can help; apply these checks directly without it.
 - State the question, the reason for this attempt, representative conditions,
   and what will be observed. Include the working hypothesis and an expectation
   when justified; exploratory observations can precede a clear hypothesis.
@@ -48,10 +59,15 @@ record.
 
 ## Keep actions separate
 
-Before a costly pilot, apply the
-[implementation efficiency checks](../evidence-based-research/SKILL.md#check-implementation-efficiency-before-costly-execution).
-Preserve the representative conditions; bounded performance checks do not
-substitute for the pilot's scientific evidence.
+Before a costly pilot, inspect its actual computation/data path for avoidable
+repeated work, movement or serialization. Reuse applicable profiles or obtain
+bounded matched-workload timings when needed. Correct evidenced inefficiencies
+within authority while preserving the scientific procedure; verify affected
+outputs/numerics and training gradients or updates, repository checks, and
+claimed time/memory effects under matched conditions. An available
+[evidence-based-research](../evidence-based-research/SKILL.md#check-implementation-efficiency-before-costly-execution)
+can help; this check still applies without it. Preserve representative
+conditions; performance checks do not substitute for scientific observations.
 
 Use existing runnable capabilities when they satisfy the protocol. Necessary
 bounded implementation or preparation can proceed within the authorized goal,
@@ -84,7 +100,10 @@ ordinary file tools.
 Check the protocol, existing implementation, environment, inputs, controls, and
 measurements before treating a raw failure as scientific rejection. Record run
 validity separately from the scientific interpretation. Use
-[interpretation](../interpretation/SKILL.md) to analyze valid observations.
+[interpretation](../interpretation/SKILL.md) when available to analyze valid
+observations. Without it, verify artifact provenance and metric definitions,
+compare effects/variation and alternatives, and separate observed results,
+gate decisions and scoped scientific claims using the rules below.
 Assess whether the observations answer the pilot's question. An execution check
 or initial change does not establish an unexamined premise. Preserve that gap
 when planning follow-up work, including when execution is already authorized;
@@ -112,8 +131,11 @@ untested conditions, and alternative explanations.
 For an invalid run, repair a demonstrated defect and rerun only when both are
 within the existing implementation and execution scope. Further informative
 attempts within the agreed conditions and budget can continue without repeated
-approval. Use [evidence-based-research](../evidence-based-research/SKILL.md) to choose the next inquiry and
-[probing](../probing/SKILL.md) to revise a hypothesis. For expansion beyond the
+approval. An available [evidence-based-research](../evidence-based-research/SKILL.md) can
+help choose the next inquiry, and an available [probing](../probing/SKILL.md)
+can help revise a hypothesis. Without them, identify the judgment changed by
+valid observations, remaining alternatives and the next useful comparison
+directly; preserve prior hypotheses and evidence. For expansion beyond the
 authorized boundary, present the changed conditions, runs, time, and compute
 before obtaining the required scope decision. A pilot can end with unresolved
 questions and does not require a larger study.

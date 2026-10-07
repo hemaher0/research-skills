@@ -10,6 +10,16 @@ come from results, precedents, failed reproductions, implementation behavior,
 derivations, or the user's observations. An unfinished connection can be a
 useful outcome.
 
+## Optional companions
+
+Before following a link to another skill, check the current host's available
+skills list and its applicable scope. Read/invoke its actual listed installed
+path and name; links here identify the companion, not a source to load instead.
+A source or cache file alone does not make that skill available. Use listed companions only when useful; otherwise
+perform this skill's method below with project procedures and ordinary tools.
+Do not read an unavailable skill or its templates, install it automatically,
+route back in a loop, or weaken the required outcome because it is absent.
+
 ## Make the cues comparable
 
 For each consequential cue, retain its source, object or phenomenon, relation,
@@ -47,12 +57,15 @@ for equivalence or a common causal mechanism.
 Describe the candidate connection, how it changes the current understanding,
 the cues that support it, and the gaps or counterexamples that weaken it.
 Keep competing framings when the evidence cannot choose among them. Check the
-closest precedents with [exploration](../exploration/SKILL.md) when a novelty or
-cross-domain claim matters; an appealing framing is not itself proof of novelty.
+closest precedents with [exploration](../exploration/SKILL.md) when available
+and a novelty or cross-domain claim matters; without it, inspect primary
+sources directly, compare definitions/conditions, and state search limits; an appealing framing is not itself proof of novelty.
 
-Use [probing](../probing/SKILL.md) to develop a provisional explanation or
-consequence from the connection. Use [evidence-based-research](../evidence-based-research/SKILL.md) to choose
-an informative next attempt. Transforming results to answer the existing
+Use [probing](../probing/SKILL.md) when available to develop a provisional
+explanation, and [evidence-based-research](../evidence-based-research/SKILL.md)
+when available to choose an informative attempt. Without them, state the
+connection's assumptions, derive supported consequences, compare alternatives
+and name the observation that could distinguish them directly. Transforming results to answer the existing
 measurement question belongs to [interpretation](../interpretation/SKILL.md);
 this skill applies when the relationship, concept, or question is reframed.
 Do not require a settled theory, polished proposal, or separate document.

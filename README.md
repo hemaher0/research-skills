@@ -1,7 +1,7 @@
 # Research Skills
 
-Codex skills for AI/ML research. **All skills in this repository are installed,
-updated, and removed together as one `research-skills` plugin.**
+Codex skills for AI/ML research. Install selected skills for one project or
+for your user account. An optional `research-skills` plugin bundles the set.
 
 ## Included skills
 
@@ -21,162 +21,222 @@ change, and useful findings can remain incomplete.
 | [experiments](plugins/research-skills/skills/experiments/SKILL.md) | Manage the protocol, lineage, execution state, and evidence of a requested persistent experiment record. |
 | [pilot](plugins/research-skills/skills/pilot/SKILL.md) | Obtain new evidence under representative conditions within an authorized execution scope. |
 | [report](plugins/research-skills/skills/report/SKILL.md) | Present current findings and open questions faithfully in the requested format. |
-| [notion-mirror](plugins/research-skills/skills/notion-mirror/SKILL.md) | Mirror a completed local experiment document to its configured Notion destination when requested. |
+| [notion-mirror](plugins/research-skills/skills/notion-mirror/SKILL.md) | Mirror a local experiment document under its configured trigger and existing authorization. |
 | [run-gpu](plugins/research-skills/skills/run-gpu/SKILL.md) | Run CUDA work through a stable repository approval prefix and a shared uv or Conda environment. |
 
 ## Install for a project
 
-Install the plugin and complete applicable project settings using the steps
-below. Preserve existing instructions and established choices.
-
-Keep the marketplace and enablement in the target project using the files
-below. Write these project files directly: `codex plugin marketplace add` and
-`codex plugin add` save user-level configuration in `~/.codex/config.toml`;
-running them from a project directory does not make them project-scoped.
-The plugin browser also saves user-level enablement choices.
-Neither route is a step in this project-only procedure.
-
-Reuse a suitable source checkout when present. For a first setup, run these
-commands from the **target project's root**, with Git access to this repository:
+Run from the target project's root. Reuse a suitable existing source checkout;
+do not clone over one. Each project keeps its own source revision and selected
+links, so projects can expose different skill sets independently.
 
 ```bash
-mkdir -p .agents/vendor .agents/plugins .codex
+mkdir -p .agents/vendor .agents/skills
 git clone --branch main https://github.com/hemaher0/research-skills.git .agents/vendor/research-skills
 ```
 
-Create or merge the following into the target project's
-`.agents/plugins/marketplace.json`:
+Select individual skills by linking their complete directories. This example
+exposes three skills; change the list to your selection:
 
-```json
-{
-  "name": "project-skills",
-  "plugins": [
-    {
-      "name": "research-skills",
-      "source": {
-        "source": "local",
-        "path": "./.agents/vendor/research-skills/plugins/research-skills"
-      },
-      "policy": {
-        "installation": "AVAILABLE",
-        "authentication": "ON_INSTALL"
-      },
-      "category": "Productivity"
-    }
-  ]
-}
+```bash
+for skill in exploration interpretation report; do
+  target=".agents/skills/$skill"
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    printf 'Preserve existing path: %s\n' "$target" >&2
+    continue
+  fi
+  ln -s "../vendor/research-skills/plugins/research-skills/skills/$skill" "$target"
+done
 ```
 
-Keep existing marketplace entries. When using multiple skill repositories, add
-their entries to the same `plugins` array. Paths resolve from the target
-project's root. If its marketplace already has a different `name`, keep that
-name and use it in the configuration keys below.
+Alternatively, expose the complete set:
 
-Merge this setting into the target project's `.codex/config.toml`:
-
-```toml
-[plugins."research-skills@project-skills"]
-enabled = true
+```bash
+for source in .agents/vendor/research-skills/plugins/research-skills/skills/*; do
+  [ -f "$source/SKILL.md" ] || continue
+  skill="${source##*/}"
+  target=".agents/skills/$skill"
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    printf 'Preserve existing path: %s\n' "$target" >&2
+    continue
+  fi
+  ln -s "../vendor/research-skills/plugins/research-skills/skills/$skill" "$target"
+done
 ```
 
-Complete the project configuration below, then open the project as trusted and
-start a **new Codex session**; restart the desktop app when needed. Codex uses
-the project configuration during local marketplace discovery and refresh.
-Verify that the plugin's skills are available in that project session.
-Project configuration is loaded only for trusted projects.
+Preserve the native source tree:
+`agents/`, scripts, and package templates are required resources. Copying only
+`SKILL.md` or moving a folder away from its package templates loses resources.
+The vendor directory is source storage; selected `.agents/skills` links expose
+skills to Codex.
 
-Codex may keep plugin files in its shared `~/.codex/plugins/cache/`; that cache
-location does not determine enablement scope. Existing user-level enablement
-remains a separate setting; adding project settings does not remove it.
-See the [official project plugin configuration guide](https://developers.openai.com/plugins/build/plugins#enable-or-disable-a-plugin-for-a-repo).
+Verify a selected link and its path in Codex's skill selector (`/skills` in the
+CLI), then invoke it with `$report` or another selected `$<skill-name>`. Codex
+detects skill changes; restart it if the selection is stale.
+
+```bash
+readlink -f .agents/skills/report
+test -f .agents/skills/report/SKILL.md
+```
+
+Use only applicable [project configuration](#project-configuration). Reasoning
+skills alone need no new configuration file, GPU launcher or Notion setup.
+
+### Update or remove a project installation
+
+From the same project root, inspect local changes before updating:
+
+```bash
+git -C .agents/vendor/research-skills status --short
+git -C .agents/vendor/research-skills pull --ff-only
+```
+
+Links follow this checkout's updates; other projects keep their own revisions.
+Expose newly added skills only when selected. For a pinned revision, follow its
+selected revision policy. Redeploy a changed GPU launcher separately.
+
+To remove one skill, confirm its link points into this source checkout before
+unlinking it:
+
+```bash
+readlink .agents/skills/report
+unlink .agents/skills/report
+```
+
+Remove other selected links the same way. Preserve unrelated skills, records,
+settings and deployed runtime files. Remove the source only when no retained
+link or other work needs it.
+
+## Install globally
+
+A user-wide installation exposes the selected skills across projects. Its
+source revision is shared; use independent project sources when selections or
+revisions should differ. Reuse a suitable existing global checkout.
+
+```bash
+mkdir -p "$HOME/.agents/vendor" "$HOME/.agents/skills"
+git clone --branch main https://github.com/hemaher0/research-skills.git "$HOME/.agents/vendor/research-skills"
+```
+
+Choose individual skills:
+
+```bash
+for skill in exploration interpretation report; do
+  target="$HOME/.agents/skills/$skill"
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    printf 'Preserve existing path: %s\n' "$target" >&2
+    continue
+  fi
+  ln -s "../vendor/research-skills/plugins/research-skills/skills/$skill" "$target"
+done
+```
+
+Alternatively, expose the complete set:
+
+```bash
+for source in "$HOME"/.agents/vendor/research-skills/plugins/research-skills/skills/*; do
+  [ -f "$source/SKILL.md" ] || continue
+  skill="${source##*/}"
+  target="$HOME/.agents/skills/$skill"
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    printf 'Preserve existing path: %s\n' "$target" >&2
+    continue
+  fi
+  ln -s "../vendor/research-skills/plugins/research-skills/skills/$skill" "$target"
+done
+```
+
+Retain the native vendor tree, including package templates and scripts. Verify
+a selected link and its global path in Codex's selector. Invoke standalone
+skills with `$<skill-name>`; restart Codex if changes do not appear.
+
+```bash
+readlink -f "$HOME/.agents/skills/report"
+test -f "$HOME/.agents/skills/report/SKILL.md"
+```
+
+Global skills use the current project's configuration. They do not make one
+project's paths, GPU environment or Notion destination universal defaults.
+
+### Update or remove a global installation
+
+```bash
+git -C "$HOME/.agents/vendor/research-skills" status --short
+git -C "$HOME/.agents/vendor/research-skills" pull --ff-only
+```
+
+Updates affect every project using these global links; independent project
+sources keep their revision. Link newly added skills only when selected and
+redeploy each changed project GPU launcher separately.
+
+Confirm ownership before removing a global link:
+
+```bash
+readlink "$HOME/.agents/skills/report"
+unlink "$HOME/.agents/skills/report"
+```
+
+Remove only selected links. Retain source used by other links/work, and leave
+project records, settings and deployed launchers to their own lifecycle.
+
+## Discovery and optional routing
+
+Codex scans project `.agents/skills` from the working directory up to the
+repository root and user skills in `$HOME/.agents/skills`. It supports linked
+skill folders. Same-name local, global and plugin skills are not merged; local
+installation does not hide a global copy. For distinct project sets, expose
+skills locally and remove or disable overlapping global/plugin copies through
+their actual configuration. See the
+[official discovery and disable settings](https://learn.chatgpt.com/docs/build-skills).
+
+A companion skill is used only when listed as available by the current host
+and applicable to the work. Vendor/cache file existence is not availability.
+Each skill retains its own method and uses project procedures or ordinary tools
+when a companion is absent. Missing optional skills do not cause errors,
+recursive routing, automatic installation, or weaker evidence requirements.
+Package templates/scripts remain resources, not companion skills.
 
 ## Project configuration
 
-Writing root `AGENTS.local.md` is a required installation step.
+For either installation scope, use the current project's existing instructions
+and authoritative settings. Configure only the capability in use. Conversational
+reasoning/reporting needs no managed experiment store or new `AGENTS.local.md`.
 
-1. Read existing project instructions, the
-   [project template](plugins/research-skills/templates/AGENTS.md) and the
-   [local configuration template](plugins/research-skills/templates/AGENTS.local.md).
-   Create the local file from the template, or merge its research section into
-   the existing file. Preserve established settings and other packages' sections.
-2. Replace applicable placeholders with actual document/artifact paths, host
-   settings and integration configuration. Use established paths or the
-   documented record defaults in [experiments](plugins/research-skills/skills/experiments/SKILL.md).
-   Resolve relative experiment-document paths from the main checkout.
-3. Keep shared research choices in their project configuration and reproducible
-   environments in native manifests/setup configuration. Follow
-   [run-gpu](plugins/research-skills/skills/run-gpu/SKILL.md) for the shared uv or
-   Conda environment and stable wrapper. Where settings already exist,
-   reference their actual source and verify its contents. Credentials remain
-   with their existing credential store or connector.
-4. For Notion mirroring, fill the destination configuration as described below.
-   Remove fields for features the project does not use. `Disabled`/`Not Configured`
-   denotes an unused integration, not an unknown destination. Required unset
-   values keep configuration incomplete.
-5. Connect the local file to root instructions using the procedure below.
+Use the [project template](plugins/research-skills/templates/AGENTS.md) and
+[local override template](plugins/research-skills/templates/AGENTS.local.md)
+only for missing project choices. Preserve existing rules and other packages'
+sections. Shared research settings and reproducible environments stay in their
+native manifests/configuration. Private host overrides may use project-root
+`AGENTS.local.md`; if created, connect it through existing `AGENTS.md` or
+`AGENTS.override.md`. Preserve existing instructions. If root `AGENTS.md` is
+absent and a local file was intentionally created, use
+`ln -s AGENTS.local.md AGENTS.md` to connect it.
 
-If root `AGENTS.md` exists, preserve it and add this instruction unless it
-already reads or resolves to the local file:
+- Persistent experiment management uses the package
+  [experiment template](plugins/research-skills/templates/experiment.md),
+  scientific identity/protocol/lifecycle, and the configured document root.
+  Unless otherwise configured, new records use
+  `references/experiments/YYYY-MM-DD-<topic>/YYYY-MM-DD-<topic>-experiment.md`
+  relative to the main checkout. Keep existing record paths.
+- GPU work uses each project's native environment/allocation and a separately
+  deployed stable launcher as described below.
+- Notion mirrors follow configured triggers and existing standing or direct
+  authorization. Authorized automatic sync can include ongoing records; do not
+  require another request or complete a record just to mirror it.
 
-```markdown
-Read and follow root AGENTS.local.md when it exists.
-```
+For Notion, verify the selected integration source and destination URL/type.
+For a data source, configure its ID and exact title, record-ID, applicable
+category and scientific-state mappings. For a parent page, configure the
+exact-ID child-title pattern. Credentials stay with the connector. Omit unused
+features; resolve essential missing destination/access before a mirror.
+Installation itself does not create records, run workloads or synchronize pages.
 
-If `AGENTS.md` is absent, the recommended connection is a relative symbolic
-link from the project root, after writing `AGENTS.local.md`:
-
-```bash
-ln -s AGENTS.local.md AGENTS.md
-```
-
-Preserve existing files and links and avoid self-references. If
-`AGENTS.override.md` takes precedence, ensure it reads the local file.
-
-### Notion destination settings
-
-Fill these actual values when Notion mirroring is used:
-
-- Destination URL and destination type: parent page or data source.
-- For a parent page: the child-title pattern containing the exact Experiment ID.
-- For a data source: its identifier, title and Experiment ID property mappings,
-  and the status property and value corresponding to Completed.
-
-Use the existing selected integration configuration when present. Otherwise,
-write these destination fields directly in root `AGENTS.local.md`. If stored
-elsewhere, fill the configuration-source field with that actual file's path
-and verify that its required destination fields are filled. A pointer to a
-nonexistent file, a placeholder URL or "use defaults" does not configure
-Notion. The destination contract is in
-[notion-mirror](plugins/research-skills/skills/notion-mirror/SKILL.md).
-
-Before completing installation, read the completed local file and referenced
-configuration. Verify that applicable values are filled, no placeholders
-remain, configured paths resolve, and effective instructions read the local
-file. Check actual marketplace paths/name and skill availability in a new
-session. Verify the GPU wrapper when GPU setup is used, and report any
-unverified Notion access. Installation does not run a research workload or
-create a Notion page.
-
-Reasoning skills supply scientific judgment; `experiments` supplies record
-identity, provenance, lineage, format, and lifecycle. Forward document discovery,
-placement, writing, editing, and review to an available document router;
-otherwise use project conventions and ordinary file tools. Experiment records
-and work records do not replace each other.
-
-An experiment may use several repositories; preserve each contribution's code
-identity and the execution environment for each run. Git naming, isolation,
-remote operations and integration follow the project's Git workflow rather
-than a separate experiment-specific procedure.
-
-Unless project configuration selects another location, new experiment records
-use this path relative to the main checkout:
-
-```text
-references/experiments/YYYY-MM-DD-<topic>/YYYY-MM-DD-<topic>-experiment.md
-```
-
-Configured roots and filename conventions take precedence. Keep existing
-record paths when continuing an experiment.
+Check effective instructions and configuration needed for the actual work.
+Use an available compatible document workflow or ordinary file tools for local
+record operations. Capture follows project policy; installation does not enable
+it. Git naming, workspace isolation, review and publication follow project
+instructions and existing authorization. An experiment may use several code
+repositories; preserve each revision and the selected execution environment.
 
 ## Usage
 
@@ -194,7 +254,7 @@ Use $pilot to plan the essential comparisons and representative execution needed
 Use $pilot to execute the agreed pilot and report its results in this conversation.
 Use $report to present the current findings and open questions in this conversation.
 Use $report to present the reviewed analysis in the existing experiment record.
-Use $notion-mirror to mirror the completed local experiment document to its configured Notion destination.
+Use $notion-mirror to mirror this local experiment document under the configured trigger and existing authorization.
 Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this repository's selected shared uv or Conda environment.
 ```
 
@@ -235,11 +295,12 @@ Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this re
   Both can return a conversational answer with unresolved questions. Create
   files only for a requested or project-required deliverable; new runs and
   experiment records are not prerequisites.
-- **notion-mirror:** Use only when mirroring a completed local experiment
-  document is requested. It is not a prerequisite for other research skills.
-  Notion access and a selected destination configuration are required.
-  Private/host overrides in the installation's `AGENTS.local.md` are optional.
-  Missing settings or access do not change the local experiment's completed status.
+- **notion-mirror:** Follow configured triggers and existing authorization,
+  including standing authorization for ongoing records. Preserve scientific
+  status. The skill is optional: an authorized project mirror can use its
+  existing connector and ordinary file tools. Notion access and verified
+  destination/identity/state mappings are required. Private overrides belong
+  to the current project; a failed mirror does not change scientific status.
 - **run-gpu:** Requires Bash and Git. Inventory uses `nvidia-smi` without a
   Python environment. The default uv backend uses the main checkout's
   `pyproject.toml`, `uv.lock`, and `.venv`. The Conda backend uses `conda` and an
@@ -247,7 +308,7 @@ Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this re
   NVIDIA GPU, a driver, and CUDA-enabled PyTorch in the selected environment.
 - Run the installed skill's `install-gpu-exec` once to deploy the stable
   entrypoint at the target repository's `.agents/bin/gpu-exec`. Reinstalling
-  after a plugin update preserves this path so every GPU command begins with
+  after a source or plugin update preserves this path so every GPU command begins with
   the same approval prefix.
 - The main checkout and linked worktrees share the selected project environment
   and prioritize the selected worktree's `src`. uv uses
@@ -261,7 +322,7 @@ Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this re
   `--devices` only for explicit device selection. The caller's options determine
   the number of `torchrun` processes. Respect scheduler and container allocations.
 - On a remote server, use the wrapper and repository paths installed on that
-  server. Follow existing SSH and scheduler procedures. Plugin installation
+  server. Follow existing SSH and scheduler procedures. Skill installation
   does not grant GPU access.
 
 `run-gpu` resolves checkout and wrapper paths from Git, verifies the selected shared
@@ -287,38 +348,42 @@ Update reader-facing documentation only when requested.
 
 ### Install the GPU entrypoint
 
-From the main checkout, run the project's installer in the ordinary sandbox:
+Deploy only for a project that needs GPU setup. For a project-local source, run
+the bundled installer in the ordinary sandbox with that project's main checkout:
 
 ```bash
 .agents/vendor/research-skills/plugins/research-skills/skills/run-gpu/scripts/install-gpu-exec --repository /absolute/path/to/main-checkout
 ```
 
+For a global source, deploy the same files to the selected project's main checkout:
+
+```bash
+"$HOME/.agents/vendor/research-skills/plugins/research-skills/skills/run-gpu/scripts/install-gpu-exec" --repository /absolute/path/to/main-checkout
+```
+
+The installer copies `gpu-exec` and `gpu_probe.py` to the project's `.agents/bin`;
+it does not link a source wrapper or build an environment. Redeploy changed
+launcher files separately. Unlinking a skill leaves these copies; retain them
+while used and remove only the owned copies when GPU support is retired.
 Use the printed absolute path, `<main-checkout>/.agents/bin/gpu-exec`, as the
 single reusable approval prefix for GPU execution. Put `--workdir`, `--devices`,
 the execution mode, and its arguments after this fixed path. Do not execute GPU
 commands directly through a wrapper in the plugin cache.
 
-## Update or remove from a project
+## Optional plugin installation
 
-From the target project's root, update its source checkout:
+The plugin package remains at `plugins/research-skills/` and the repository
+[marketplace](.agents/plugins/marketplace.json) remains available. Use the
+[official plugin guide](https://developers.openai.com/plugins/build/plugins)
+when choosing bundle distribution. A plugin exposes its complete skill set and
+uses a managed installed copy under `~/.codex/plugins/cache/`; direct links read
+their source checkout. Shared plugin caching does not isolate project revisions.
 
-```bash
-git -C .agents/vendor/research-skills pull --ff-only
-```
-
-Restart the app if using the desktop client and start a new Codex session so
-the local plugin is refreshed. Run `install-gpu-exec` again if its bundled
-launcher changed.
-
-To disable it for this project, set
-`plugins."research-skills@project-skills".enabled = false` in
-`.codex/config.toml`, using the project's actual marketplace name. To remove
-the project setup, remove that configuration entry and only the `research-skills`
-entry from `.agents/plugins/marketplace.json`. Keep other plugins' entries.
-The source checkout can be removed separately once it is no longer needed.
-If the GPU entrypoint was installed and is no longer used, also remove its
-deployed `.agents/bin/gpu-exec` and `.agents/bin/gpu_probe.py` files. Plugin removal
-does not remove those repository-local copies.
+Project and user plugin enablement are separate settings. Preserve existing
+marketplace entries and its actual name when configuring a project. CLI/browser
+user installation choices are user-scoped. Refresh/update/remove through the
+chosen plugin route and inspect actual paths if also using direct skills.
+Project runtime files and records remain separately owned.
 
 ## Repository layout
 
@@ -366,8 +431,8 @@ Place optional `agents/` or `scripts/` alongside them and reusable templates
 in `plugins/research-skills/templates/`. Keep **one plugin** in the marketplace.
 
 Manage `version` in `.codex-plugin/plugin.json` when preparing a release.
-Local plugin refresh follows the source-update and restart steps above; a
-manifest version change is not required for that refresh. An edit or push alone
+Direct links follow source updates; plugin refresh uses the selected plugin
+route. A manifest version change is not required merely for a local update. An edit or push alone
 does not require a new release.
 
 ## Development checks

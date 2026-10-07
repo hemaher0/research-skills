@@ -1,7 +1,8 @@
 # Local Research Configuration
 
-<!-- Create or merge this package section into root AGENTS.local.md during
-installation. Mark configuration complete only after required values or their
+<!-- Use applicable sections only when the current project needs local overrides.
+Install scope does not require this file; existing project sources may already
+supply all settings. Create or merge into project-root AGENTS.local.md when needed. Mark configuration complete only after required values or their
 existing authoritative sources are resolved. Remove unused fields/headings. Preserve existing values
 and other packages' sections. Shared locations, reproducible environment
 configuration and mirror contracts stay in their existing configuration sources.
@@ -39,4 +40,6 @@ is unused, omit this section; declare that feature choice in project settings. -
 - Data source identifier, for a data source: `<actual identifier>`
 - Title property mapping, for a data source: `<actual property name>`
 - Experiment ID property mapping, for a data source: `<actual property name>`
-- Status property and Completed value, for a data source: `<actual property name and value>`
+- Synchronization trigger and existing authorization: `<configured event and authorized scope; preserve existing standing authorization>`
+- Category property/value, for a data source when applicable: `<actual mapping>`
+- Status property and scientific-state mapping, for a data source: `<actual property name and mapping for the source states>`

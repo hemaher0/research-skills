@@ -32,6 +32,16 @@ still has one scientific writer when several agents contribute to it. Under
 an older work-item schema, send timestamped handoffs to one record writer.
 Apply the same ownership rules when no document router is installed.
 
+## Optional companions
+
+Before following a link to another skill, check the current host's available
+skills list and its applicable scope. Read/invoke its actual listed installed
+path and name; links here identify the companion, not a source to load instead.
+A source or cache file alone does not make that skill available. Use listed companions only when useful; otherwise
+perform this skill's method below with project procedures and ordinary tools.
+Do not read an unavailable skill or its templates, install it automatically,
+route back in a loop, or weaken the required outcome because it is absent.
+
 ## Configuration and boundaries
 
 Read applicable repository and local instructions before creating or continuing
@@ -70,12 +80,15 @@ available, follow the repository's document conventions with ordinary file
 tools. Do not make a documentation plugin a prerequisite for the record.
 
 When a bounded preliminary run is requested, use the independent
-[pilot skill](../pilot/SKILL.md). A pilot can run without this record; when both
+[pilot skill](../pilot/SKILL.md) when available. Without it, record the purpose,
+representative conditions, comparisons, measurements and authorized budget,
+execute through project entrypoints, and assess run validity and claim limits. A pilot can run without this record; when both
 are requested, place its decisions and evidence in the existing record.
 
-A standalone result analysis uses [interpretation](../interpretation/SKILL.md),
-and a requested presentation uses [report](../report/SKILL.md). Neither requires
-a persistent experiment record. Use [evidence-based-research](../evidence-based-research/SKILL.md) for
+An available [interpretation](../interpretation/SKILL.md) can guide standalone
+analysis, and an available [report](../report/SKILL.md) can guide presentation.
+Without them, apply the evidence/claims and section contract below directly. Neither requires
+a persistent experiment record. When available, use [evidence-based-research](../evidence-based-research/SKILL.md) for
 iterative direction, [probing](../probing/SKILL.md) for hypothesis development,
 [exploration](../exploration/SKILL.md) for precedents, and
 [digging](../digging/SKILL.md) or [reinterpretation](../reinterpretation/SKILL.md)
@@ -89,11 +102,11 @@ a documentation update from the experiment alone.
 
 ## Scientific contract
 
-- Preserve
-  [evidence-based-research's consequential-choice basis](../evidence-based-research/SKILL.md#ground-consequential-choices)
-  in the protocol and relevant existing fields: purpose, applicable evidence,
-  unresolved premises, consequences, and observations needed before dependent
-  work. Keep requested constraints and selected methods distinct. Record status
+- Record each consequential choice's purpose, applicable evidence, unresolved
+  premises, consequences, and observations needed before dependent work in
+  the protocol and relevant existing fields. The available
+  [evidence-based-research](../evidence-based-research/SKILL.md#ground-consequential-choices)
+  companion can help; these fields and checks apply without it. Keep requested constraints and selected methods distinct. Record status
   and execution history do not change a choice's authority or evidential status.
 - Record the current question, purpose, relevant cues, and unresolved
   uncertainty. A partial hypothesis or an exploratory question is sufficient;
@@ -119,8 +132,9 @@ a documentation update from the experiment alone.
   justify a next step without
   establishing robustness, mechanism, or generality; a failed gate under limited
   conditions does not by itself refute the hypothesis everywhere.
-- Preserve [interpretation](../interpretation/SKILL.md)'s distinctions among
-  observations, explanations, implications, and open claims. Store linked
+- Distinguish observations, explanations, implications, and open claims
+  directly. An available [interpretation](../interpretation/SKILL.md) can help
+  with analysis; it is not needed to preserve these distinctions. Store linked
   artifacts and the judgment they informed, including negative and unexpected
   findings. Closing this record does not resolve every scientific question.
 - For supplied or reused result artifacts, verify the link to their claimed
@@ -260,8 +274,11 @@ setup parents, children, and related documents in the experiment record.
 
 ### Evidence and claims
 
-Use [interpretation](../interpretation/SKILL.md) for scientific analysis and
-[report](../report/SKILL.md) when presenting it. This skill preserves their
+Use [interpretation](../interpretation/SKILL.md) when available for scientific
+analysis and [report](../report/SKILL.md) when available for presentation.
+Without them, check artifact-to-source provenance and metric definitions,
+compare valid observations and alternatives, and write the scoped conclusion
+under the section contract below. This skill preserves the
 evidence links and claim boundaries in the managed record, together with the
 history of which observation changed which judgment. A contradiction,
 inconclusive comparison, or unchanged judgment belongs in that history too.

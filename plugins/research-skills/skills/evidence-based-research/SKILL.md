@@ -10,6 +10,16 @@ The useful outcome may be a discovered relation, a narrower question, a failed
 explanation, or an unresolved issue worth retaining. Questions, methods, and
 measurement targets can evolve.
 
+## Optional companions
+
+Before following a link to another skill, check the current host's available
+skills list and its applicable scope. Read/invoke its actual listed installed
+path and name; links here identify the companion, not a source to load instead.
+A source or cache file alone does not make that skill available. Use listed companions only when useful; otherwise
+perform this skill's method below with project procedures and ordinary tools.
+Do not read an unavailable skill or its templates, install it automatically,
+route back in a loop, or weaken the required outcome because it is absent.
+
 ## Choose the current inquiry
 
 Start from the user's research aim, existing cues, prior attempts, and the
@@ -19,7 +29,10 @@ user's observations, domain knowledge, counterexamples, and proposed direction
 throughout the inquiry. Explain consequential reframing of the requested aim
 and resolve a change beyond its authorized scope before pursuing it.
 
-Use other reasoning skills at the point they help:
+Use the following reasoning companions when they are available and helpful.
+Without one, inspect the relevant primary sources, trace the uncertain link,
+compare valid observations, or develop the provisional explanation directly
+within the purpose/evidence/feedback method here:
 
 | Current need | Skill |
 | --- | --- |
@@ -110,9 +123,12 @@ implementation, or representative execution rather than defaulting to a run.
 Use existing artifacts when they can answer the current question.
 
 Carry out the attempt within the user's implementation and execution scope.
-Use the available development skills for needed code and software verification,
-[pilot](../pilot/SKILL.md) for bounded representative runs, and the project's
-GPU workflow when required. A planning or discussion request alone does not
+Use applicable available development skills for needed code and software
+verification, [pilot](../pilot/SKILL.md) when available for bounded representative
+runs, and the project's GPU procedure when required. Without companion skills,
+use repository implementation/check procedures and ordinary tools; define the
+run's purpose, representative conditions, measurements and resource boundary,
+then verify run and measurement validity through existing entrypoints. A planning or discussion request alone does not
 authorize training, new repository code, or publication.
 
 Inspect actual results and case-level diagnostics, including unexpected
@@ -139,8 +155,11 @@ boundary is reached; continue within an existing authorization without seeking
 permission for every iteration.
 
 Keep findings proportionate to the request. Use [experiments](../experiments/SKILL.md)
-for requested persistent experiment management and [report](../report/SKILL.md)
-for a requested presentation. Otherwise communicate the current findings,
+when available for requested persistent records and [report](../report/SKILL.md)
+when available for a requested presentation. Without them, maintain the
+project-designated record with question/protocol history, code/run identity,
+evidence and actual lifecycle, or present scoped findings directly in the
+requested format. Otherwise communicate the current findings,
 uncertainty, changed judgment, and reason for the next attempt in the
 conversation and any project-required record. Every inquiry need not become a
 finished study, and every hypothesis need not be resolved before handoff.

@@ -9,6 +9,16 @@ Investigate what prior work actually establishes, under which conditions, and
 what remains worth investigating. The question and search vocabulary may
 change as the literature becomes clearer.
 
+## Optional companions
+
+Before following a link to another skill, check the current host's available
+skills list and its applicable scope. Read/invoke its actual listed installed
+path and name; links here identify the companion, not a source to load instead.
+A source or cache file alone does not make that skill available. Use listed companions only when useful; otherwise
+perform this skill's method below with project procedures and ordinary tools.
+Do not read an unavailable skill or its templates, install it automatically,
+route back in a loop, or weaken the required outcome because it is absent.
+
 ## Shape the investigation
 
 Translate the user's question into the distinctions that matter: phenomenon,
@@ -56,9 +66,12 @@ universal claim of absence or novelty.
 
 Answer in the conversation unless a durable deliverable is requested or project
 policy requires a record. Use the project's document conventions and any
-available document router for a requested artifact. Use [digging](../digging/SKILL.md)
-when a particular problem needs decomposition and
-[reinterpretation](../reinterpretation/SKILL.md) when cues need a new framing.
+available document router for a requested artifact. An available [digging](../digging/SKILL.md)
+can help decompose a particular problem; an available
+[reinterpretation](../reinterpretation/SKILL.md) can help reframe cues. Without
+them, trace the relevant assumption/method/evidence connection directly or
+compare alternate definitions and framings while retaining provenance and
+conditions.
 These are follow-up choices, not required stages.
 
 ## Research basis

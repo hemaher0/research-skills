@@ -9,6 +9,16 @@ Decompose a specific problem until the uncertain connection is visible. The
 outcome may be a clearer question or an unexplained mechanism; understanding
 does not require an immediate fix or a successful full reproduction.
 
+## Optional companions
+
+Before following a link to another skill, check the current host's available
+skills list and its applicable scope. Read/invoke its actual listed installed
+path and name; links here identify the companion, not a source to load instead.
+A source or cache file alone does not make that skill available. Use listed companions only when useful; otherwise
+perform this skill's method below with project procedures and ordinary tools.
+Do not read an unavailable skill or its templates, install it automatically,
+route back in a loop, or weaken the required outcome because it is absent.
+
 ## Locate the uncertainty
 
 Identify the observation, argument, or behavior to understand, including the
@@ -35,7 +45,10 @@ Check the existing artifacts and implementation first. Run an analysis or
 reproduction only within the requested execution scope. Preserve the conditions
 needed to study the phenomenon; a convenient miniature may test software
 behavior while failing to represent the research question. If representative
-new evidence is needed, use [pilot](../pilot/SKILL.md) for its execution scope.
+new evidence is needed and [pilot](../pilot/SKILL.md) is available, use its
+execution guidance. Otherwise define the informative comparison, representative
+conditions, observations and authorized resource boundary here, then execute
+through the project's existing entrypoint and verify run/measurement validity.
 
 Track the inspected code revision and relevant inputs. Distinguish a run or
 measurement defect from evidence against the scientific explanation. A
@@ -55,9 +68,12 @@ has been localized, or further progress needs unavailable evidence or a new
 execution scope. Incorporate the user's domain knowledge and counterexamples
 when they change the decomposition.
 
-Use [interpretation](../interpretation/SKILL.md) for conclusions from existing
-results, [probing](../probing/SKILL.md) for a provisional explanation, and
-[evidence-based-research](../evidence-based-research/SKILL.md) for the next evidence-led attempt. No new
+When available, [interpretation](../interpretation/SKILL.md) can help analyze
+existing results, [probing](../probing/SKILL.md) can develop a provisional
+explanation, and [evidence-based-research](../evidence-based-research/SKILL.md)
+can guide the next attempt. Without them, return the checked connections,
+scoped explanation and alternatives, and the next observation that would
+discriminate them using the method above. No new
 experiment record or durable artifact is required merely to investigate.
 
 ## Research basis

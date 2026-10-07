@@ -33,6 +33,12 @@ overrides belong in existing host configuration when needed.
 
 ## Notion Mirror Configuration (when selected)
 
+Mirrors follow configured triggers and existing direct or standing authority.
+Reuse authorization for automatic sync, respect exclusions, and preserve the
+source's actual scientific state. Do not require a separate request or complete
+an ongoing record merely to publish it. A specialized mirror skill is optional;
+use the established connector and ordinary file tools when it is unavailable.
+
 - Notion mirror configuration source: `<existing project/private integration configuration, or Not Configured>`
 
 The selected configuration declares the exact destination URL/type and either
@@ -42,6 +48,7 @@ mirror skill specifies the required fields, verifies the actual destination,
 and owns the requested write; credentials stay with the connector. An individual
 experiment's mirror URL and result stay in that experiment record.
 
-Read and follow root `AGENTS.local.md` when it exists. Overrides remain within
+Read and follow root `AGENTS.local.md` when it exists. Skill installation does
+not require a new override file when existing project settings suffice. Overrides remain within
 project policy and actual permissions; they do not authorize execution or
 external publication.

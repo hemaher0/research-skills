@@ -9,6 +9,16 @@ Develop a provisional hypothesis from research cues. A hypothesis may concern
 a relationship, possible effect, explanatory mechanism, or partial pattern;
 it need not begin as a complete causal theory or numerical prediction.
 
+## Optional companions
+
+Before following a link to another skill, check the current host's available
+skills list and its applicable scope. Read/invoke its actual listed installed
+path and name; links here identify the companion, not a source to load instead.
+A source or cache file alone does not make that skill available. Use listed companions only when useful; otherwise
+perform this skill's method below with project procedures and ordinary tools.
+Do not read an unavailable skill or its templates, install it automatically,
+route back in a loop, or weaken the required outcome because it is absent.
+
 ## Connect observation to conjecture
 
 State what has actually been observed and under which conditions. Connect the
@@ -46,7 +56,10 @@ a scale-dependent hypothesis.
 Check evidence validity and relevance before changing the claim. Accept
 surprising evidence as a reason to examine the explanation and its conditions;
 familiarity with a prior theory is not grounds to reject sound observations.
-Use [interpretation](../interpretation/SKILL.md) when result analysis is needed.
+Use [interpretation](../interpretation/SKILL.md) when available for result
+analysis. Without it, verify provenance/measurement validity, compare the
+conditions and observed variation, and separate observations from compatible
+explanations and unsupported claims.
 
 Retain the previous hypothesis and the evidence that motivated refinement,
 combination, narrowing, or rejection. Distinguish an inspiring source from a
@@ -57,9 +70,12 @@ a justified probabilistic model supports numerical confidence.
 Return the working hypothesis, linked cues, added assumptions, unexplained
 parts, and the next useful observation. Open, competing, revised, or shelved
 hypotheses are legitimate states; no terminal verdict is compulsory. Use
-[evidence-based-research](../evidence-based-research/SKILL.md) for iterative progress and
-[pilot](../pilot/SKILL.md) for representative new-evidence execution when
-requested. Hypothesis development alone does not authorize those runs or
+[evidence-based-research](../evidence-based-research/SKILL.md) when available
+for iteration and [pilot](../pilot/SKILL.md) when available for requested
+representative execution. Without them, choose the next observation using
+the cues/assumptions/alternatives above; for an authorized run define its
+representative conditions, measurements and budget, then execute and verify
+validity through the project's existing procedure. Hypothesis development alone does not authorize those runs or
 require a durable registry.
 
 ## Research basis
