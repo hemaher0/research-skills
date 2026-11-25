@@ -23,7 +23,8 @@ boundary below.
 ## Stable entrypoint and permission
 
 Read effective project instructions and native environment/scheduler
-configuration; use a selected host profile in `AGENTS.local.md` when present.
+configuration; use a selected host profile in `AGENTS.local.md` or Claude Code's
+`CLAUDE.local.md` when present.
 Resolve the main checkout and worktree relationship from actual Git state,
 confirm the selected shared environment, and inspect the current permitted allocation.
 The dependency declarations, scheduler and host approval controls remain
@@ -47,8 +48,14 @@ location is:
 Every GPU command must begin directly with that exact absolute path. Options and
 subcommands may vary after it; the executable path remains the approval prefix.
 Do not prepend `env`, variable assignments, `uv`, `bash`, `source`, `cd`, or
-another shell launcher. When escalation is required, propose only this stable
-wrapper path as the reusable `prefix_rule`. Reuse an existing exact-path approval.
+another shell launcher, and do not chain the call with other commands. When
+escalation is required, propose only this stable wrapper path as the reusable
+approval: a `prefix_rule` in Codex, or in Claude Code the Bash permission rule
+`Bash(<main-checkout>/.agents/bin/gpu-exec *)`. Claude Code's "Yes, and don't
+ask again" saves an approved prefix to the main checkout's
+`.claude/settings.local.json`, which also covers its linked worktrees. Reuse an
+existing exact-path approval. Edit settings files only when the user asks for
+that configuration change.
 
 The wrapper binds its authority to the containing main checkout. It accepts only
 that checkout and worktrees sharing its Git common directory, and selects
@@ -156,6 +163,13 @@ Specify `--nproc-per-node` to match the intended visible devices.
 Keep code edits, static checks, and CPU-only tests in the ordinary sandbox. Inspect
 device occupancy before a substantial workload and run only experiments or tests
 within the user's requested scope.
+
+Claude Code's Bash sandbox is off by default. When it is enabled and blocks
+device access for the wrapper, report that cause. Run the wrapper outside the
+sandbox only through the host's controls: an `excludedCommands` entry for the
+wrapper's absolute path that the user configures, or the host's approval for an
+unsandboxed retry. An excluded command still goes through the permission rules
+above.
 
 `nvidia-smi` is inventory evidence. Complete GPU verification with `probe`, which
 must perform a real CUDA tensor operation using the shared environment and selected

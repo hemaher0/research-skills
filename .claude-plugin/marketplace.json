@@ -1,0 +1,19 @@
+{
+  "name": "hemaher0-research-skills",
+  "owner": {
+    "name": "hemaher0",
+    "url": "https://github.com/hemaher0"
+  },
+  "metadata": {
+    "description": "AI/ML research skills for evidence-led inquiry, experiment records, pilots, reports, Notion mirrors, and GPU execution."
+  },
+  "plugins": [
+    {
+      "name": "research-skills",
+      "source": "./plugins/research-skills",
+      "description": "AI/ML precedent investigation, problem decomposition, result interpretation, cue recombination, hypothesis development, and iterative research, with independent records, pilots, reports, mirrors, and GPU execution.",
+      "version": "0.3.0",
+      "category": "productivity"
+    }
+  ]
+}

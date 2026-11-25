@@ -2,14 +2,17 @@
 
 <!-- Use applicable sections only when the current project needs local overrides.
 Install scope does not require this file; existing project sources may already
-supply all settings. Create or merge into project-root AGENTS.local.md when needed. Mark configuration complete only after required values or their
+supply all settings. Create or merge into project-root AGENTS.local.md when needed,
+or into CLAUDE.local.md for a project that keeps Claude Code's local instructions
+there. Mark configuration complete only after required values or their
 existing authoritative sources are resolved. Remove unused fields/headings. Preserve existing values
 and other packages' sections. Shared locations, reproducible environment
 configuration and mirror contracts stay in their existing configuration sources.
 Resolve checkout, environment, wrapper, dependency and allocation facts from
 Git, runtime tools and the scheduler. Keep run-specific state in its record.
-Do not duplicate settings resolved elsewhere. Connect the file through existing
-AGENTS.md, or a recommended AGENTS.md symlink when absent, following the source README.
+Do not duplicate settings resolved elsewhere. Connect AGENTS.local.md through
+existing AGENTS.md or CLAUDE.md, or a recommended AGENTS.md symlink when absent,
+following the source README; Claude Code loads CLAUDE.local.md by itself.
 Never put credentials or assertions of newly granted permissions here. -->
 
 ## Research Configuration Status

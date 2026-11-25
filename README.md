@@ -1,7 +1,9 @@
 # Research Skills
 
-Codex skills for AI/ML research. Install selected skills for one project or
-for your user account. An optional `research-skills` plugin bundles the set.
+Skills for AI/ML research in Codex and Claude Code. Install selected skills for
+one project or for your user account. An optional `research-skills` plugin
+bundles the set. Claude Code uses `.claude/skills/` and `~/.claude/skills/`; see
+[Use with Claude Code](#use-with-claude-code).
 
 ## Included skills
 
@@ -179,6 +181,84 @@ unlink "$HOME/.agents/skills/report"
 Remove only selected links. Retain source used by other links/work, and leave
 project records, settings and deployed launchers to their own lifecycle.
 
+## Use with Claude Code
+
+Claude Code discovers project skills in `.claude/skills/<name>/SKILL.md` and
+personal skills in `~/.claude/skills/<name>/SKILL.md`. The skill folders in
+this repository work there without conversion. Keep the source checkout
+described above and expose the selected skills from the project root, for
+example:
+
+```bash
+mkdir -p .claude/skills
+for skill in exploration interpretation report; do
+  target=".claude/skills/$skill"
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    printf 'Preserve existing path: %s\n' "$target" >&2
+    continue
+  fi
+  ln -s "../../.agents/vendor/research-skills/plugins/research-skills/skills/$skill" "$target"
+done
+```
+
+The link targets are relative to `.claude/skills`. For personal skills, run
+the same loop with `$HOME/.claude/skills` and the global source checkout under
+`$HOME/.agents/vendor`; the relative targets stay the same. Where symbolic
+links are unavailable, such as Windows without Developer Mode, copy each
+selected folder completely instead and copy it again after updating the source.
+
+A project that already exposes these skills to Codex under `.agents/skills`
+can give Claude Code the same selection. The loop skips links that belong to
+other skill sources and preserves existing paths:
+
+```bash
+mkdir -p .claude/skills
+for source in .agents/skills/*; do
+  [ -L "$source" ] || continue
+  skill="${source##*/}"
+  [ "$(readlink "$source")" = "../vendor/research-skills/plugins/research-skills/skills/$skill" ] || continue
+  target=".claude/skills/$skill"
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    printf 'Preserve existing path: %s\n' "$target" >&2
+    continue
+  fi
+  ln -s "../../.agents/vendor/research-skills/plugins/research-skills/skills/$skill" "$target"
+done
+```
+
+Both hosts then read the same source checkout, so the update commands above
+apply to both. Link newly added skills separately when selected.
+
+Use a skill by its name, for example `/report`, or let Claude select it from
+its description. Confirm that the name appears in the session's skill list;
+start a new session if a newly added folder is not listed.
+
+Claude Code can also install this repository as a plugin marketplace:
+
+```bash
+claude plugin marketplace add hemaher0/research-skills
+claude plugin install research-skills@hemaher0-research-skills
+```
+
+Inside a session, `/plugin marketplace add hemaher0/research-skills` and
+`/plugin install research-skills@hemaher0-research-skills` do the same; Claude
+Code 2.1.275 or later also accepts
+`/plugin install research-skills --marketplace hemaher0/research-skills` in one
+step. Plugin skills are namespaced, for example `/research-skills:report`.
+Installation records the plugin in user settings by default; `--scope project`
+or `--scope local` records it in the project's shared or local settings instead.
+Installed plugins are separate copies from the folders above, so a skill exposed
+both ways appears twice.
+
+Claude Code reads `CLAUDE.md`. It reads `AGENTS.md` only when no `CLAUDE.md` or
+`CLAUDE.local.md` exists in the working directory or above it (Claude Code
+2.1.277 or later) and does not read `AGENTS.local.md` by itself. When a project
+keeps shared instructions in `AGENTS.md` and also has a `CLAUDE.md`, add an
+`@AGENTS.md` line to `CLAUDE.md`. An instruction in `AGENTS.md` to read
+`AGENTS.local.md` keeps local configuration in effect. `experiments`,
+`notion-mirror` and `run-gpu` read local overrides from `AGENTS.local.md` or
+`CLAUDE.local.md`, which Claude Code loads by itself.
+
 ## Discovery and optional routing
 
 Codex scans project `.agents/skills` from the working directory up to the
@@ -257,6 +337,10 @@ Use $report to present the reviewed analysis in the existing experiment record.
 Use $notion-mirror to mirror this local experiment document under the configured trigger and existing authorization.
 Use $run-gpu to inspect GPU status and verify a CUDA tensor operation in this repository's selected shared uv or Conda environment.
 ```
+
+The examples use Codex's `$<skill-name>` form. In Claude Code, name the skill
+the same way or invoke it as `/<skill-name>`, or `/research-skills:<skill-name>`
+for the plugin.
 
 ### Environment and workflow requirements
 
@@ -370,6 +454,17 @@ single reusable approval prefix for GPU execution. Put `--workdir`, `--devices`,
 the execution mode, and its arguments after this fixed path. Do not execute GPU
 commands directly through a wrapper in the plugin cache.
 
+In Claude Code the matching permission rule is
+`Bash(/absolute/path/to/main-checkout/.agents/bin/gpu-exec *)`. Approving the
+first GPU command with "Yes, and don't ask again" saves the approved prefix to
+the main checkout's `.claude/settings.local.json`, which also covers its linked
+worktrees. A rule naming the bare program does not match an absolute-path call,
+and an allow rule does not match a call with a leading variable assignment or a
+chained command, so keep the fixed path first and alone. When Claude Code's
+Bash sandbox is enabled and blocks GPU access, an `excludedCommands` entry for
+the same absolute path runs the wrapper outside the sandbox; it still goes
+through the permission rules.
+
 ## Optional plugin installation
 
 The plugin package remains at `plugins/research-skills/` and the repository
@@ -385,12 +480,19 @@ user installation choices are user-scoped. Refresh/update/remove through the
 chosen plugin route and inspect actual paths if also using direct skills.
 Project runtime files and records remain separately owned.
 
+Claude Code reads the same package through
+[.claude-plugin/marketplace.json](.claude-plugin/marketplace.json) and
+`plugins/research-skills/.claude-plugin/plugin.json`; see
+[Use with Claude Code](#use-with-claude-code) for its install commands.
+
 ## Repository layout
 
 ```text
 .agents/plugins/marketplace.json
+.claude-plugin/marketplace.json
 plugins/research-skills/
 ├── .codex-plugin/plugin.json
+├── .claude-plugin/plugin.json
 ├── templates/
 │   ├── AGENTS.md
 │   ├── AGENTS.local.md
@@ -430,7 +532,8 @@ basis and evidence limits in `SKILL.md`; no separate workflow document is requir
 Place optional `agents/` or `scripts/` alongside them and reusable templates
 in `plugins/research-skills/templates/`. Keep **one plugin** in the marketplace.
 
-Manage `version` in `.codex-plugin/plugin.json` when preparing a release.
+Manage `version` in `.codex-plugin/plugin.json`, `.claude-plugin/plugin.json`
+and the Claude Code marketplace entry together when preparing a release.
 Direct links follow source updates; plugin refresh uses the selected plugin
 route. A manifest version change is not required merely for a local update. An edit or push alone
 does not require a new release.

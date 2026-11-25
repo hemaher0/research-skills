@@ -48,7 +48,8 @@ mirror skill specifies the required fields, verifies the actual destination,
 and owns the requested write; credentials stay with the connector. An individual
 experiment's mirror URL and result stay in that experiment record.
 
-Read and follow root `AGENTS.local.md` when it exists. Skill installation does
+Read and follow root `AGENTS.local.md` when it exists; Claude Code also loads
+root `CLAUDE.local.md` by itself. Skill installation does
 not require a new override file when existing project settings suffice. Overrides remain within
 project policy and actual permissions; they do not authorize execution or
 external publication.

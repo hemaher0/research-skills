@@ -35,7 +35,8 @@ mirror.
 
 Resolve the Notion mirror configuration from effective project instructions
 and their designated integration source. Read a selected private configuration
-override in `AGENTS.local.md` when present. Use the established project
+override in `AGENTS.local.md` or Claude Code's `CLAUDE.local.md` when present.
+If both select different destinations, stop and ask the user. Use the established project
 configuration unless a completed authorized override selects another source.
 A placeholder is not a selected destination. Required destination values must
 resolve from actual inline fields or a verified existing configuration source.

@@ -155,8 +155,9 @@ a documentation update from the experiment alone.
 ## Local source and completion
 
 Resolve shared experiment-document locations from effective project instructions
-or their existing configuration source. Use a selected local `AGENTS.local.md`
-path override when it specifies a path within project policy; otherwise use
+or their existing configuration source. Use a selected path override in the
+local `AGENTS.local.md` or Claude Code's `CLAUDE.local.md` when it specifies a
+path within project policy; ask the user which applies if they disagree. Otherwise use
 the shared setting. Installation configuration follows the source README;
 record management consumes the effective locations.
 Empty/placeholder or `Use Repository Default` overrides leave that setting
